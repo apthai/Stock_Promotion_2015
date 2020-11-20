@@ -1,0 +1,139 @@
+<?xml version="1.0" standalone="yes"?>
+<NewDataSet>
+  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="dt1" msdata:CaseSensitive="False" msdata:Locale="en-US">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="ItemNo" type="xs:string" minOccurs="0" />
+                <xs:element name="ItemName" type="xs:string" minOccurs="0" />
+                <xs:element name="CostCenter" type="xs:string" minOccurs="0" />
+                <xs:element name="ProfitCenterHO" type="xs:string" minOccurs="0" />
+                <xs:element name="GLNo" type="xs:string" minOccurs="0" />
+                <xs:element name="GLName" type="xs:string" minOccurs="0" />
+                <xs:element name="profitCenter" type="xs:string" minOccurs="0" />
+                <xs:element name="debit" type="xs:decimal" minOccurs="0" />
+                <xs:element name="credit" type="xs:decimal" minOccurs="0" />
+                <xs:element name="itemtext" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="dt2" msdata:CaseSensitive="False" msdata:Locale="en-US">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="ItemNo" type="xs:string" minOccurs="0" />
+                <xs:element name="ItemName" type="xs:string" minOccurs="0" />
+                <xs:element name="CostCenter" type="xs:string" minOccurs="0" />
+                <xs:element name="ProfitCenterHO" type="xs:string" minOccurs="0" />
+                <xs:element name="GLNo" type="xs:string" minOccurs="0" />
+                <xs:element name="GLName" type="xs:string" minOccurs="0" />
+                <xs:element name="InternalOrder" type="xs:string" minOccurs="0" />
+                <xs:element name="ProfitCenter" type="xs:string" minOccurs="0" />
+                <xs:element name="debit" type="xs:decimal" minOccurs="0" />
+                <xs:element name="credit" type="xs:decimal" minOccurs="0" />
+                <xs:element name="itemtext" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="dt3" msdata:CaseSensitive="False" msdata:Locale="en-US">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="CompanySAPCode" type="xs:string" minOccurs="0" />
+                <xs:element name="ItemNo" type="xs:string" minOccurs="0" />
+                <xs:element name="ItemName" type="xs:string" minOccurs="0" />
+                <xs:element name="GLNo" type="xs:string" minOccurs="0" />
+                <xs:element name="GLName" type="xs:string" minOccurs="0" />
+                <xs:element name="profitCenter" type="xs:string" minOccurs="0" />
+                <xs:element name="debit" type="xs:decimal" minOccurs="0" />
+                <xs:element name="credit" type="xs:decimal" minOccurs="0" />
+                <xs:element name="itemtext" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <dt1>
+    <ItemNo>000000000010001663</ItemNo>
+    <ItemName>โทรศัพท์ Samsung Galaxy</ItemName>
+    <CostCenter>MK40009</CostCenter>
+    <ProfitCenterHO>P41000</ProfitCenterHO>
+    <GLNo>0001580010</GLNo>
+    <GLName>สินทรัพย์ส่งเสริมการขาย</GLName>
+    <profitCenter>P41000</profitCenter>
+    <debit>167400.0234</debit>
+    <itemtext>โทรศัพท์ Samsung Galaxy 6</itemtext>
+  </dt1>
+  <dt1>
+    <ItemNo>000000000010001681</ItemNo>
+    <ItemName>บัตร BTS</ItemName>
+    <CostCenter>MK40009</CostCenter>
+    <ProfitCenterHO>P41000</ProfitCenterHO>
+    <GLNo>0001580010</GLNo>
+    <GLName>สินทรัพย์ส่งเสริมการขาย</GLName>
+    <profitCenter>P41000</profitCenter>
+    <debit>1800.0000</debit>
+    <itemtext>บัตร BTS 9</itemtext>
+  </dt1>
+  <dt1>
+    <ProfitCenterHO>P41000</ProfitCenterHO>
+    <GLNo>0000001000</GLNo>
+    <GLName>บริษัท เอพี (ไทยแลนด์) จำกัด</GLName>
+    <profitCenter>P41000</profitCenter>
+    <credit>-169200.0234</credit>
+  </dt1>
+  <dt2>
+    <ItemNo>000000000010001663</ItemNo>
+    <ItemName>โทรศัพท์ Samsung Galaxy</ItemName>
+    <GLNo>0006010113</GLNo>
+    <GLName>Production - Others</GLName>
+    <InternalOrder>MK40009</InternalOrder>
+    <debit>167400.0234</debit>
+    <itemtext>โทรศัพท์ Samsung Galaxy 6</itemtext>
+  </dt2>
+  <dt2>
+    <ItemNo>000000000010001681</ItemNo>
+    <ItemName>บัตร BTS</ItemName>
+    <GLNo>0006010113</GLNo>
+    <GLName>Production - Others</GLName>
+    <InternalOrder>MK40009</InternalOrder>
+    <debit>1800.0000</debit>
+    <itemtext>บัตร BTS 9</itemtext>
+  </dt2>
+  <dt2>
+    <ProfitCenterHO>P41000</ProfitCenterHO>
+    <GLNo>0001580010</GLNo>
+    <GLName>สินทรัพย์ส่งเสริมการขาย</GLName>
+    <credit>-169200.0234</credit>
+  </dt2>
+  <dt3>
+    <CompanySAPCode>4000</CompanySAPCode>
+    <GLNo>0000004000</GLNo>
+    <GLName>บริษัท เอเชี่ยน พร็อพเพอร์ตี้ จำกัด</GLName>
+    <profitCenter>P11000</profitCenter>
+    <debit>169200.0234</debit>
+  </dt3>
+  <dt3>
+    <CompanySAPCode>4000</CompanySAPCode>
+    <ItemNo>000000000010001663</ItemNo>
+    <ItemName>โทรศัพท์ Samsung Galaxy</ItemName>
+    <GLNo>0001580010</GLNo>
+    <GLName>สินทรัพย์ส่งเสริมการขาย</GLName>
+    <profitCenter>P11000</profitCenter>
+    <credit>-167400.0234</credit>
+    <itemtext>โทรศัพท์ Samsung Galaxy 6</itemtext>
+  </dt3>
+  <dt3>
+    <CompanySAPCode>4000</CompanySAPCode>
+    <ItemNo>000000000010001681</ItemNo>
+    <ItemName>บัตร BTS</ItemName>
+    <GLNo>0001580010</GLNo>
+    <GLName>สินทรัพย์ส่งเสริมการขาย</GLName>
+    <profitCenter>P11000</profitCenter>
+    <credit>-1800.0000</credit>
+    <itemtext>บัตร BTS 9</itemtext>
+  </dt3>
+</NewDataSet>

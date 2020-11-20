@@ -1,0 +1,39 @@
+<?xml version="1.0" standalone="yes"?>
+<NewDataSet>
+  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="BudgetIO" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="BudgetIO">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="COMPANY" type="xs:string" minOccurs="0" />
+                <xs:element name="COMNAME" type="xs:string" minOccurs="0" />
+                <xs:element name="PROJECT" type="xs:string" minOccurs="0" />
+                <xs:element name="PROJECT_DESC" type="xs:string" minOccurs="0" />
+                <xs:element name="IO" type="xs:string" minOccurs="0" />
+                <xs:element name="BUDGET" type="xs:string" minOccurs="0" />
+                <xs:element name="USED" type="xs:string" minOccurs="0" />
+                <xs:element name="AVAILABLE" type="xs:string" minOccurs="0" />
+                <xs:element name="WaitToPost" type="xs:decimal" default="0" minOccurs="0" />
+                <xs:element name="AvailableX" type="xs:decimal" default="0" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <BudgetIO>
+    <COMPANY>1000</COMPANY>
+    <COMNAME>AP (Thailand)</COMNAME>
+    <PROJECT>1/019</PROJECT>
+    <PROJECT_DESC>The Centro รามอินทรา(แฟร์ชั่นไอร์แลนด์)</PROJECT_DESC>
+    <IO>MP10019</IO>
+    <BUDGET>5032.10</BUDGET>
+    <USED>2032.10</USED>
+    <AVAILABLE>3000.00</AVAILABLE>
+    <WaitToPost>0</WaitToPost>
+    <AvailableX>3000.00</AvailableX>
+  </BudgetIO>
+</NewDataSet>

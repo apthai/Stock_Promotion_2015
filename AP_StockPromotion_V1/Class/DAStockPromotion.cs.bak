@@ -1,0 +1,2856 @@
+﻿using AP_StockPromotion_V1.webpage;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.Common;
+using System.Data.SqlClient;
+using System.Globalization;
+using System.Transactions;
+using System.Linq;
+using System.Web;
+using static AP_StockPromotion_V1.webpage.CostCenterACRecord;
+
+namespace AP_StockPromotion_V1.Class
+{
+    public class DAStockPromotion
+    {
+        private static string connStr = ConfigurationManager.ConnectionStrings["db_APStockPromotion"].ConnectionString;
+
+        public DataSet execDataSet(string sql)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+
+                using (SqlConnection conn = new SqlConnection(connStr))
+                using (SqlCommand comm = new SqlCommand(sql, conn))
+                using (SqlDataAdapter da = new SqlDataAdapter(comm))
+                {
+                    da.Fill(ds);
+                }
+
+                return ds;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public DataTable execDataTable(string sql)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+
+                using (SqlConnection conn = new SqlConnection(connStr))
+                using (SqlCommand comm = new SqlCommand(sql, conn))
+                using (SqlDataAdapter da = new SqlDataAdapter(comm))
+                {
+                    da.Fill(ds);
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public bool execCommand(string sql)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                using (SqlCommand comm = new SqlCommand(sql, conn))
+                {
+                    comm.ExecuteNonQuery();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public DataTable getDataUserByEmpCode(string empCode)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    SqlCommand sqlComm = new SqlCommand("dbo.spGetUserStock", conn);
+                    sqlComm.Parameters.AddWithValue("@EmpCode", empCode);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+                    da.Fill(ds);
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public DataTable getMenuList(string RoleCode)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    SqlCommand sqlComm = new SqlCommand("dbo.spGetMenuListByRoleCode", conn);
+                    sqlComm.Parameters.AddWithValue("@RoleCode", RoleCode);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+                    da.Fill(ds);
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        public DataTable getMenuList(int RoleId)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    SqlCommand sqlComm = new SqlCommand("dbo.spGetMenuList", conn);
+                    sqlComm.Parameters.AddWithValue("@RoleId", RoleId);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+                    da.Fill(ds);
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public DataTable getDataUser(string firstName, string lastName)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    SqlCommand sqlComm = new SqlCommand("dbo.spGetUserStock", conn);
+                    sqlComm.Parameters.AddWithValue("@FirstName", firstName);
+                    sqlComm.Parameters.AddWithValue("@LastName", lastName);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+                    da.Fill(ds);
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public DataTable getDataStatus(string StatusHeaderId)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    SqlCommand sqlComm = new SqlCommand("dbo.spGetStatusDetailList", conn);
+                    sqlComm.Parameters.AddWithValue("@StatusHeaderId", StatusHeaderId);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+                    da.Fill(ds);
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public DataTable getDataMasterItem(Entities.MasterItemInfo item)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    SqlCommand sqlComm = new SqlCommand("dbo.spGetMasterItem", conn);
+                    sqlComm.Parameters.AddWithValue("@MasterItemId", item.MasterItemId);
+                    sqlComm.Parameters.AddWithValue("@MasterItemGroupId", item.MasterItemGroupId);
+                    sqlComm.Parameters.AddWithValue("@ItemNo", item.ItemNo);
+                    sqlComm.Parameters.AddWithValue("@ItemName", item.ItemName);
+                    sqlComm.Parameters.AddWithValue("@ItemCostBegin", item.ItemCostBeg);
+                    sqlComm.Parameters.AddWithValue("@ItemCostEnd", item.ItemCostEnd);
+                    sqlComm.Parameters.AddWithValue("@ItemCountMethod", item.ItemCountMethod);
+                    sqlComm.Parameters.AddWithValue("@ItemStock", item.ItemStock);
+                    sqlComm.Parameters.AddWithValue("@ItemStatus", item.ItemStatus);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+                    da.Fill(ds);
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public DataTable GetDataMasterItemByID(int itemID)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spGetDataMasterItemByID]", sqlConn))
+                    {
+                        sqlCmd.Parameters.Add("@MIID", SqlDbType.Int).Value = itemID;
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = sqlCmd;
+                        da.Fill(ds);
+                    }
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
+        public bool InsertDataMasterItem(Entities.MasterItemInfo item)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+                    SqlCommand sqlComm = new SqlCommand("dbo.spInsertMasterItem", conn);
+                    sqlComm.Parameters.AddWithValue("@MasterItemGroupId", item.MasterItemGroupId);
+                    sqlComm.Parameters.AddWithValue("@ItemNo", item.ItemNo);
+                    sqlComm.Parameters.AddWithValue("@ItemName", item.ItemName);
+                    sqlComm.Parameters.AddWithValue("@ItemBasePricePerUnit", item.ItemCost);
+                    sqlComm.Parameters.AddWithValue("@ItemPricePerUnit", item.ItemCostIncVat);
+                    sqlComm.Parameters.AddWithValue("@ItemCountMethod", item.ItemCountMethod);
+                    sqlComm.Parameters.AddWithValue("@ItemStock", item.ItemStock);
+                    sqlComm.Parameters.AddWithValue("@ItemStatus", item.ItemStatus);
+                    sqlComm.Parameters.AddWithValue("@UpdateBy", item.UpdateBy);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    sqlComm.ExecuteNonQuery();
+                    conn.Close();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool CheckStatusBeforeApprove(string docno)
+        {
+            try
+            {
+                bool isCheck = false;
+                DataSet ds = new DataSet();
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spCheckStatusBeforeApprove]", sqlConn))
+                    {
+                        sqlCmd.Parameters.Add("@DOCNO", SqlDbType.VarChar, 9).Value = docno;
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = sqlCmd;
+                        da.Fill(ds);
+                    }
+                }
+
+                if (ds.Tables[0].Rows.Count == 0)
+                {
+                    isCheck = true;
+                }
+
+                return isCheck; //ds.Tables[0].Rows[0].ItemArray[0];
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool DeleteMemoRequest(string docno)
+        {
+            try
+            {
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spDeleteMemoRequest]", sqlConn))
+                    {
+                        if (sqlConn.State == ConnectionState.Closed) sqlConn.Open();
+
+                        sqlCmd.Parameters.Add("@DOCNO", SqlDbType.VarChar, 9).Value = docno;
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+                        sqlCmd.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool UpdateApproveMemoRequest(string docno)
+        {
+            try
+            {
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spUpdateApproveMemoRequest]", sqlConn))
+                    {
+                        if (sqlConn.State == ConnectionState.Closed) sqlConn.Open();
+
+                        sqlCmd.Parameters.Add("@DOCNO", SqlDbType.VarChar, 9).Value = docno;
+
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+                        sqlCmd.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool CheckStatusBeforeReject(string docno)
+        {
+            try
+            {
+                bool isCheck = false;
+                DataSet ds = new DataSet();
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spCheckStatusBeforeReject]", sqlConn))
+                    {
+                        sqlCmd.Parameters.Add("@DOCNO", SqlDbType.VarChar, 9).Value = docno;
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = sqlCmd;
+                        da.Fill(ds);
+                    }
+                }
+
+                if (ds.Tables[0].Rows.Count == 0)
+                {
+                    isCheck = true;
+                }
+
+                return isCheck; //ds.Tables[0].Rows[0].ItemArray[0];
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool UpdateRejectMemoRequest(string docno)
+        {
+            try
+            {
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spUpdateRejectMemoRequest]", sqlConn))
+                    {
+                        if (sqlConn.State == ConnectionState.Closed) sqlConn.Open();
+
+                        sqlCmd.Parameters.Add("@DOCNO", SqlDbType.VarChar, 9).Value = docno;
+
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+                        sqlCmd.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool UpdateRejectReason(string docno, string reason)
+        {
+            try
+            {
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spUpdateRejectReason]", sqlConn))
+                    {
+                        if (sqlConn.State == ConnectionState.Closed) sqlConn.Open();
+
+                        sqlCmd.Parameters.Add("@DOCNO", SqlDbType.VarChar, 9).Value = docno;
+                        sqlCmd.Parameters.Add("@REASON", SqlDbType.VarChar, 250).Value = reason;
+
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+                        sqlCmd.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public void UpdateSendForApproveMemoRequest(string docno)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    if (conn.State == ConnectionState.Closed) conn.Open();
+                    using (SqlCommand sqlComm = new SqlCommand("[dbo].[spUpdateSendForApproveMemoRequest]", conn))
+                    {
+                        sqlComm.Parameters.Add("@DOCNO", SqlDbType.VarChar, 9).Value = docno;
+
+                        sqlComm.CommandType = CommandType.StoredProcedure;
+                        sqlComm.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        public bool UpdateDataMasterItem(Entities.MasterItemInfo item)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+                    SqlCommand sqlComm = new SqlCommand("dbo.spUpdateMasterItem", conn);
+                    sqlComm.Parameters.AddWithValue("@MasterItemId", item.MasterItemId);
+                    sqlComm.Parameters.AddWithValue("@MasterItemGroupId", item.MasterItemGroupId);
+                    sqlComm.Parameters.AddWithValue("@ItemNo", item.ItemNo);
+                    sqlComm.Parameters.AddWithValue("@ItemName", item.ItemName);
+                    sqlComm.Parameters.AddWithValue("@ItemBasePricePerUnit", item.ItemCost);
+                    sqlComm.Parameters.AddWithValue("@ItemPricePerUnit", item.ItemCostIncVat);
+                    sqlComm.Parameters.AddWithValue("@ItemCountMethod", item.ItemCountMethod);
+                    sqlComm.Parameters.AddWithValue("@ItemStock", item.ItemStock);
+                    sqlComm.Parameters.AddWithValue("@ItemForceExpire", item.ItemForceExpire);
+                    sqlComm.Parameters.AddWithValue("@ItemStatus", item.ItemStatus);
+                    sqlComm.Parameters.AddWithValue("@UpdateBy", item.UpdateBy);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    sqlComm.ExecuteNonQuery();
+                    conn.Close();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public DataTable getDataMasterProject(bool includeNoneProject = false)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    SqlCommand sqlComm = new SqlCommand("dbo.spGetMasterProject", conn);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+                    da.Fill(ds);
+                }
+                if (includeNoneProject)
+                {
+                    NoneProject(ref ds);
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        /* - None Project - */
+        private void NoneProject(ref DataSet ds)
+        {
+
+            DataRow drNoProject = ds.Tables[0].NewRow();
+            drNoProject["ProjectID"] = "99998";
+            drNoProject["ProjectCode"] = "XXXXX";
+            drNoProject["ProjectName"] = "ไม่ระบุโครงการ";
+            ds.Tables[0].Rows.Add(drNoProject);
+            ds.Tables[0].AcceptChanges();
+        }
+
+        public DataTable getDataMasterInternalOrder()
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    SqlCommand sqlComm = new SqlCommand("dbo.spGetMasterInternalOrder", conn);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+                    da.Fill(ds);
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public DataTable getDataSAPCompany()
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    SqlCommand sqlComm = new SqlCommand("dbo.spGetSAPCompany", conn);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+                    da.Fill(ds);
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public bool SyncMasterDataItem()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+                    SqlCommand sqlComm = new SqlCommand("dbo.spTransferDataMasterItemToStockPromotion", conn);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    sqlComm.ExecuteNonQuery();
+                    conn.Close();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public DataTable getDataMasterCompany()
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    SqlCommand sqlComm = new SqlCommand("dbo.spGetMasterCompany", conn);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+                    da.Fill(ds);
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public DataTable getDataMasterItemGroup(Entities.MasterItemGroupInfo itemGrp)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    SqlCommand sqlComm = new SqlCommand("dbo.spGetMasterItemGroup", conn);
+                    sqlComm.Parameters.AddWithValue("@MasterItemGroupId", itemGrp.MasterItemGroupId);
+                    sqlComm.Parameters.AddWithValue("@ItemGroupName", itemGrp.ItemGroupName + "");
+
+                    //sqlComm.Parameters.AddWithValue("@ItemCountMethod", itemGrp.ItemCountMethod + "");
+                    //sqlComm.Parameters.AddWithValue("@ItemStock", itemGrp.ItemStock + "");
+                    //sqlComm.Parameters.AddWithValue("@ItemForceExpire", itemGrp.ItemForceExpire);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+                    da.Fill(ds);
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public bool InsertDataMasterItemGroup(Entities.MasterItemGroupInfo itemGrp)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+                    SqlCommand sqlComm = new SqlCommand("dbo.spInsertMasterItemGroup", conn);
+                    sqlComm.Parameters.AddWithValue("@MasterItemGroupName", itemGrp.ItemGroupName);
+
+                    //sqlComm.Parameters.AddWithValue("@ItemCountMethod", itemGrp.ItemCountMethod + "");
+                    //sqlComm.Parameters.AddWithValue("@ItemStock", itemGrp.ItemStock + "");
+                    //sqlComm.Parameters.AddWithValue("@ItemForceExpire", itemGrp.ItemForceExpire);
+
+                    sqlComm.Parameters.AddWithValue("@UpdateBy", itemGrp.UpdateBy);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    sqlComm.ExecuteNonQuery();
+                    conn.Close();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool UpdateDataMasterItemGroup(Entities.MasterItemGroupInfo itemGrp)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+                    SqlCommand sqlComm = new SqlCommand("dbo.spUpdateMasterItemGroup", conn);
+                    sqlComm.Parameters.AddWithValue("@MasterItemGroupId", itemGrp.MasterItemGroupId);
+                    sqlComm.Parameters.AddWithValue("@MasterItemGroupName", itemGrp.ItemGroupName);
+
+                    //sqlComm.Parameters.AddWithValue("@ItemCountMethod", itemGrp.ItemCountMethod);
+                    //sqlComm.Parameters.AddWithValue("@ItemStock", itemGrp.ItemStock);
+                    //sqlComm.Parameters.AddWithValue("@ItemForceExpire", itemGrp.ItemForceExpire);
+
+                    sqlComm.Parameters.AddWithValue("@UpdateBy", itemGrp.UpdateBy);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    sqlComm.ExecuteNonQuery();
+                    conn.Close();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        /* --------------------- Phase II --------------------- */
+        #region "############# Add by Puwarun.P 19-08-2016 #############"
+
+        public string UpdateFinishMemoRequest(string docno)
+        {
+            try
+            {
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    if (sqlConn.State == ConnectionState.Closed) sqlConn.Open();
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spUpdateFinishMemoRequest]", sqlConn))
+                    {
+                        sqlCmd.Parameters.Add("@DOCNO", SqlDbType.VarChar, 15).Value = docno;
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+                        sqlCmd.ExecuteNonQuery();
+                    }
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message.ToString();
+            }
+        }
+        public DataTable GetPRMemoData()
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spGetPRMemoData]", sqlConn))
+                    {
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+
+                        SqlDataAdapter da = new SqlDataAdapter(sqlCmd);
+                        da.Fill(ds);
+                    }
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception)
+            {
+                return new DataTable();
+            }
+        }
+        public DataTable GetExpenseDesc()
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spGetDataPRExpense]", sqlConn))
+                    {
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+
+                        SqlDataAdapter da = new SqlDataAdapter(sqlCmd);
+                        da.Fill(ds);
+                    }
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception)
+            {
+                return new DataTable();
+            }
+        }
+        public DataTable GetDataTierExpense()
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spGetDataTierExpense]", conn))
+                    {
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = sqlCmd;
+                        da.Fill(ds);
+                    }
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception)
+            {
+                return new DataTable();
+            }
+        }
+
+        public DataTable GetDataTierExpenseByCostCenter(string CostCenter)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spGetDataTierCostCenter]", conn))
+                    {
+                        sqlCmd.Parameters.Add("@CCID", SqlDbType.NVarChar,100).Value = CostCenter ?? "";
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = sqlCmd;
+                        da.Fill(ds);
+                    }
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception)
+            {
+                return new DataTable();
+            }
+        }
+        public DataTable GetDistinctCostCenter()
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spGetDistinctCostCenter]", conn))
+                    {
+
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = sqlCmd;
+                        da.Fill(ds);
+                    }
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception)
+            {
+                return new DataTable();
+            }
+        }
+        public int GetPRID()
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spGetPRID]", sqlConn))
+                    {
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = sqlCmd;
+                        da.Fill(ds);
+                    }
+                }
+                return Convert.ToInt32(ds.Tables[0].Rows[0].ItemArray[0]);
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+        public bool DeleteTypeMemo(int id)
+        {
+            try
+            {
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spDeleteDataPRExpense]", sqlConn))
+                    {
+                        sqlConn.Open();
+                        sqlCmd.Parameters.Add("@PRID", SqlDbType.Int).Value = id;
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+                        sqlCmd.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool DeleteTypeMemoMgr(int id,string CCID)
+        {
+            try
+            {
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spDeleteDataManagementPRExpense]", sqlConn)) //[spDeleteDataPRExpense]
+                    {
+                        sqlConn.Open();
+                        sqlCmd.Parameters.Add("@ID", SqlDbType.Int).Value = id;
+                        sqlCmd.Parameters.Add("@CCID", SqlDbType.NVarChar,100).Value = CCID;
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+                        sqlCmd.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool SaveTypeMemo(int Mode, int PRID, int ExpID, int ApvTypeID, int AuthTypeID,string CCID)
+        {
+            try
+            {
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spInsertDataPRExpense]", sqlConn))
+                    {
+                        sqlConn.Open();
+                        sqlCmd.Parameters.Add("@MODE", SqlDbType.Int).Value = Mode;
+                        sqlCmd.Parameters.Add("@PRID", SqlDbType.Int).Value = PRID;
+                        sqlCmd.Parameters.Add("@EXPID", SqlDbType.Int).Value = ExpID;
+                        sqlCmd.Parameters.Add("@APVTYPEID", SqlDbType.Int).Value = ApvTypeID;
+                        sqlCmd.Parameters.Add("@AUTHTYPEID", SqlDbType.Int).Value = AuthTypeID;
+                        sqlCmd.Parameters.Add("@CCID", SqlDbType.NVarChar,100).Value = (CCID == null ? "" : CCID);
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+                        sqlCmd.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                string Error = ex.Message;
+                return false;
+            }
+        }
+        public bool SaveMasterPRExpense(int Mode, int EXPENSEID, int APVID, int SIGNID,string CCID)
+        {
+            try
+            {
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spInsertMasterPRExpense]", sqlConn))
+                    {
+                        sqlConn.Open();
+                        sqlCmd.Parameters.Add("@MODE", SqlDbType.Int).Value = Mode;
+                        sqlCmd.Parameters.Add("@EXPENSEID", SqlDbType.Int).Value = EXPENSEID;
+                        sqlCmd.Parameters.Add("@APVID", SqlDbType.Int).Value = APVID;
+                        sqlCmd.Parameters.Add("@SIGNID", SqlDbType.Int).Value = SIGNID;
+                        sqlCmd.Parameters.Add("@CCID", SqlDbType.NVarChar,100).Value = CCID ?? "";
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+                        sqlCmd.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public DataTable GetListMemoData(int PRID,string CCID)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlComm = new SqlCommand("[dbo].[spGetListMemoData]", conn))
+                    {
+                        sqlComm.Parameters.Add("@PRID", SqlDbType.Int).Value = PRID;
+                        sqlComm.Parameters.Add("@CCID", SqlDbType.NVarChar,100).Value = CCID ?? "";
+                        sqlComm.CommandType = CommandType.StoredProcedure;
+
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = sqlComm;
+                        da.Fill(ds);
+                    }
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                var Error = ex;
+                return new DataTable();
+            }
+        }
+        public DataTable GetListOfData()
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlComm = new SqlCommand("[dbo].[spGetMasterListMemo]", conn))
+                    {
+                        sqlComm.CommandType = CommandType.StoredProcedure;
+
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = sqlComm;
+                        da.Fill(ds);
+                    }
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception)
+            {
+                return new DataTable();
+            }
+        }
+        private ListDataID SetListDataID(List<ListOfID> lstID, int mode, string ref_doc_no, string ref_key_3, string posting_date)
+        {
+            string _id = "";
+            for (int i = 0; i < lstID.Count; i++)
+            {
+                _id += lstID[i].ID.ToString() + ",";
+            }
+
+
+            ListDataID _lstid = new ListDataID();
+            _lstid.MODE = mode;
+            _lstid.USERNAME = "APCOMMP2";
+            _lstid.DOC_DATE = posting_date;
+            _lstid.PSTNG_DATE = posting_date;
+            _lstid.FISC_YEAR = (posting_date.Length == 9 ?
+                                        (posting_date != "" ? posting_date.Substring(5, 4) : posting_date)
+                                       : (posting_date != "" ? posting_date.Substring(6, 4) : posting_date));
+            _lstid.DOC_TYPE = "IA";
+            _lstid.REF_DOC_NO = ref_doc_no;
+            _lstid.REF_KEY_3 = ref_key_3;
+            _lstid.CURRENCY = "THB";
+            _lstid.ID = _id.Substring(0, _id.Length - 1);
+            //'AP003334',
+            //'1000',
+            //'07/10/2016',
+            //'07/10/2016',
+            //'2016',
+            //'IA',
+            //'1001021',
+            //'THB',
+            //'6,7'
+            return _lstid;
+        }
+        private ListCrossData SetListCrossDataID(List<ListOfID> lstID, int mode, string ref_doc_no, string ref_key_3, string posting_date)
+        {
+            string _id = "";
+            for (int i = 0; i < lstID.Count; i++)
+            {
+                _id += lstID[i].ID.ToString() + ",";
+            }
+
+
+            ListCrossData _lstid = new ListCrossData();
+            _lstid.MODE = mode;
+            _lstid.USERNAME = "APCOMMP2";
+            _lstid.DOC_DATE = posting_date;
+            _lstid.PSTNG_DATE = posting_date;
+            _lstid.FISC_YEAR = (posting_date != "" ? posting_date.Substring(6, 4) : posting_date);
+
+            _lstid.PAYABLE_DOC_TYPE = "KR";
+            _lstid.CUTSTOCK_DOC_TYPE = "IA";
+            _lstid.RECEIVEABLE_DOC_TYPE = "DR";
+
+            _lstid.BUSINESSPLACE = "0001";
+            _lstid.VENDOR_NO = "1000";
+
+            _lstid.REF_DOC_NO = ref_doc_no;
+            _lstid.REF_KEY_3 = ref_key_3;
+            _lstid.CURRENCY = "THB";
+            _lstid.ID = _id.Substring(0, _id.Length - 1);
+
+            //0,
+            //'6',
+            //'APCOMMP2',
+            //'07/10/2016',
+            //'07/10/2016',
+            //'2016',
+            //'KR',
+            //'IA',
+            //'DR',
+            //'1001021',
+            //'6666',
+            //'THB',
+            //'0001',
+            //'1000'
+            return _lstid;
+        }
+        private string SetIDCrossCompanyBeforeSave(List<ListOfID> lstID)
+        {
+            string id = "";
+            for (int i = 0; i < lstID.Count; i++)
+            {
+                id += lstID[i].ID.ToString() + ",";
+            }
+            return id.Substring(0, id.Length - 1);
+        }
+        private string GetStrID(List<ListOfID> lstID)
+        {
+            string ret = "";
+            foreach (var item in lstID)
+            {
+                ret += item.ID.ToString() + ",";
+            }
+            return ret.Substring(0, ret.Length - 1);
+        }
+        public DataTable CheckComCodeRetValue(List<ListOfID> lstID)
+        {
+            string strID = GetStrID(lstID);
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlComm = new SqlCommand("[dbo].[spGetComCodeCountRetValue]", conn))
+                    {
+                        sqlComm.CommandType = CommandType.StoredProcedure;
+                        sqlComm.Parameters.Add("@ID", SqlDbType.VarChar, 150).Value = strID;
+
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = sqlComm;
+                        da.Fill(ds);
+                    }
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception)
+            {
+                return new DataTable();
+            }
+        }
+        public DataTable CheckComCode(List<ListOfID> lstID)
+        {
+            string strID = GetStrID(lstID);
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlComm = new SqlCommand("[dbo].[spGetComCodeCount]", conn))
+                    {
+                        sqlComm.CommandType = CommandType.StoredProcedure;
+                        sqlComm.Parameters.Add("@ID", SqlDbType.VarChar, 150).Value = strID;
+
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = sqlComm;
+                        da.Fill(ds);
+                    }
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception)
+            {
+                return new DataTable();
+            }
+        }
+        public bool UpdateSapDocIdToRequisitionRequest(List<ListOfID> lstID, string sapdocno, string ref_doc_no, string ref_key_3, string posting_date)
+        {
+            string id = SetIDCrossCompanyBeforeSave(lstID);
+            try
+            {
+                foreach (var item in lstID)
+                {
+                    using (SqlConnection conn = new SqlConnection(connStr))
+                    {
+                        using (SqlCommand sqlComm = new SqlCommand("[dbo].[spUpdateSapDocIdToRequisitionRequest]", conn))
+                        {
+
+                            conn.Open();
+                            sqlComm.CommandType = CommandType.StoredProcedure;
+                            sqlComm.Parameters.Add("@ID", SqlDbType.VarChar, 25).Value = item.ID;
+                            sqlComm.Parameters.Add("@SAPDOCNO", SqlDbType.VarChar, 25).Value = sapdocno.Substring(0, 10); //1616000136 1000 2016
+                            sqlComm.Parameters.Add("@REF_DOC_NO", SqlDbType.VarChar, 25).Value = ref_doc_no;
+                            sqlComm.Parameters.Add("@REF_KEY_3", SqlDbType.VarChar, 25).Value = ref_key_3;
+                            sqlComm.Parameters.Add("@POSTING_DATE", SqlDbType.DateTime).Value = Convert.ToDateTime(posting_date);
+                            sqlComm.CommandType = CommandType.StoredProcedure;
+                            sqlComm.ExecuteNonQuery();
+
+                        }
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public DataTable GetListDataItemsCrossCompanyByID(List<ListOfID> lstID, int mode, string ref_doc_no, string ref_key_3, string posting_date)
+        {
+            ListCrossData lstid = SetListCrossDataID(lstID, mode, ref_doc_no, ref_key_3, posting_date);
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlComm = new SqlCommand("[dbo].[spGetListDataItemsCrossCompanyByID]", conn))
+                    {
+                        sqlComm.CommandType = CommandType.StoredProcedure;
+                        sqlComm.Parameters.Add("@MODE", SqlDbType.Int).Value = lstid.MODE;
+                        sqlComm.Parameters.Add("@ID", SqlDbType.VarChar, 25).Value = lstid.ID;
+                        sqlComm.Parameters.Add("@USERNAME", SqlDbType.VarChar, 12).Value = lstid.USERNAME;
+                        sqlComm.Parameters.Add("@DOC_DATE", SqlDbType.VarChar, 10).Value = lstid.DOC_DATE;
+                        sqlComm.Parameters.Add("@PSTNG_DATE", SqlDbType.VarChar, 10).Value = lstid.PSTNG_DATE;
+                        sqlComm.Parameters.Add("@FISC_YEAR", SqlDbType.VarChar, 4).Value = lstid.FISC_YEAR;
+                        sqlComm.Parameters.Add("@PAYABLE_DOC_TYPE", SqlDbType.VarChar, 2).Value = lstid.PAYABLE_DOC_TYPE;
+                        sqlComm.Parameters.Add("@CUTSTOCK_DOC_TYPE", SqlDbType.VarChar, 2).Value = lstid.CUTSTOCK_DOC_TYPE;
+                        sqlComm.Parameters.Add("@RECEIVEABLE_DOC_TYPE", SqlDbType.VarChar, 2).Value = lstid.RECEIVEABLE_DOC_TYPE;
+                        sqlComm.Parameters.Add("@REF_DOC_NO", SqlDbType.VarChar, 16).Value = lstid.REF_DOC_NO;
+                        sqlComm.Parameters.Add("@REF_KEY_3", SqlDbType.VarChar, 500).Value = lstid.REF_KEY_3;
+                        sqlComm.Parameters.Add("@CURRENCY", SqlDbType.VarChar, 3).Value = lstid.CURRENCY;
+                        sqlComm.Parameters.Add("@BUSINESSPLACE", SqlDbType.VarChar, 10).Value = lstid.BUSINESSPLACE;
+                        sqlComm.Parameters.Add("@VENDOR_NO", SqlDbType.VarChar, 10).Value = lstid.VENDOR_NO;
+
+                        //MODE 
+                        //ID 
+                        //USERNAME 
+                        //DOC_DATE 
+                        //PSTNG_DATE 
+                        //FISC_YEAR 
+                        //PAYABLE_DOC_TYPE 
+                        //CUTSTOCK_DOC_TYPE 
+                        //RECEIVEABLE_DOC_TYPE 
+                        //REF_DOC_NO 
+                        //REF_KEY_3 
+                        //CURRENCY 
+                        //BUSINESSPLACE 
+                        //VENDOR_NO 
+
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = sqlComm;
+                        da.Fill(ds);
+                    }
+                }
+
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+        public DataTable GetListDataItemsByID(List<ListOfID> lstID, int mode, string ref_doc_no, string ref_key_3, string posting_date)
+        {
+            ListDataID lstid = SetListDataID(lstID, mode, ref_doc_no, ref_key_3, posting_date);
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlComm = new SqlCommand("[dbo].[spGetListDataItemsByID]", conn))
+                    {
+                        sqlComm.CommandType = CommandType.StoredProcedure;
+                        sqlComm.Parameters.Add("@MODE", SqlDbType.Int).Value = lstid.MODE;
+                        sqlComm.Parameters.Add("@USERNAME", SqlDbType.VarChar, 12).Value = lstid.USERNAME;
+                        sqlComm.Parameters.Add("@DOC_DATE", SqlDbType.VarChar, 10).Value = lstid.DOC_DATE;
+                        sqlComm.Parameters.Add("@PSTNG_DATE", SqlDbType.VarChar, 10).Value = lstid.PSTNG_DATE;
+                        sqlComm.Parameters.Add("@FISC_YEAR", SqlDbType.VarChar, 4).Value = lstid.FISC_YEAR;
+                        sqlComm.Parameters.Add("@DOC_TYPE", SqlDbType.VarChar, 2).Value = lstid.DOC_TYPE;
+                        sqlComm.Parameters.Add("@REF_DOC_NO", SqlDbType.VarChar, 16).Value = lstid.REF_DOC_NO;
+                        sqlComm.Parameters.Add("@REF_KEY_3", SqlDbType.VarChar, 500).Value = lstid.REF_KEY_3;
+                        sqlComm.Parameters.Add("@CURRENCY", SqlDbType.VarChar, 3).Value = lstid.CURRENCY;
+                        sqlComm.Parameters.Add("@ID", SqlDbType.VarChar, 25).Value = lstid.ID;
+
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = sqlComm;
+                        da.Fill(ds);
+                    }
+                }
+
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+        public DataTable GetListDataMasterItems(string docid, string itemno, string stddate, string enddate)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    SqlCommand sqlComm = new SqlCommand("[dbo].[spGetListDataMasterItems]", conn);
+
+                    sqlComm.Parameters.Add("@DOCID", SqlDbType.VarChar, 20).Value = docid;
+                    sqlComm.Parameters.Add("@ITEMNO", SqlDbType.VarChar, 20).Value = itemno;
+
+
+                    sqlComm.Parameters.Add("@STDDATE", SqlDbType.VarChar, 10).Value = stddate.Split('/')[2].ToString() + stddate.Split('/')[1].ToString() + stddate.Split('/')[0].ToString();
+                    sqlComm.Parameters.Add("@ENDDATE", SqlDbType.VarChar, 10).Value = enddate.Split('/')[2].ToString() + enddate.Split('/')[1].ToString() + enddate.Split('/')[0].ToString();
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+                    da.Fill(ds);
+                }
+                return ds.Tables[0];
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        public string OnCommandSaveRequisition(List<string> lstStr, string userName)
+        {
+            string retStr;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+
+                    using (SqlCommand sqlComm = new SqlCommand("[dbo].[spInsertDataRequisition]", conn))
+                    {
+
+                        DataSet ds = new DataSet();
+                        sqlComm.Parameters.Add("@RQRNO", SqlDbType.VarChar, 10).Value = lstStr[0];
+                        sqlComm.Parameters.Add("@DRNO", SqlDbType.VarChar, 25).Value = lstStr[1];
+
+                        DateTime dt;
+                        dt = DateTime.ParseExact(lstStr[2], "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                        sqlComm.Parameters.Add("@RCVD", SqlDbType.DateTime).Value = dt.ToString("dd/MM/yyyy");
+                        dt = DateTime.ParseExact(lstStr[3], "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                        sqlComm.Parameters.Add("@CURD", SqlDbType.DateTime).Value = dt.ToString("dd/MM/yyyy");
+
+                        sqlComm.Parameters.Add("@REFREQID", SqlDbType.VarChar, 10).Value = lstStr[4];
+                        sqlComm.Parameters.Add("@REQID", SqlDbType.VarChar, 10).Value = lstStr[5];
+                        sqlComm.Parameters.Add("@REQN", SqlDbType.VarChar, 150).Value = lstStr[6];
+                        sqlComm.Parameters.Add("@PROMOTID", SqlDbType.Int).Value = Convert.ToInt32(lstStr[7]);
+                        sqlComm.Parameters.Add("@PROMOTN", SqlDbType.VarChar, 150).Value = lstStr[8];
+                        sqlComm.Parameters.Add("@DEPTID", SqlDbType.VarChar, 20).Value = lstStr[9];
+                        sqlComm.Parameters.Add("@DEPTN", SqlDbType.VarChar, 150).Value = lstStr[10];
+
+                        sqlComm.Parameters.Add("@GLID", SqlDbType.Int).Value = (lstStr[11] != "" ? Convert.ToInt32(lstStr[11]) : 0);
+                        sqlComm.Parameters.Add("@GLN", SqlDbType.VarChar, 150).Value = lstStr[12];
+                        sqlComm.Parameters.Add("@OBJID", SqlDbType.Int).Value = Convert.ToInt32(lstStr[13]);
+                        sqlComm.Parameters.Add("@OBJN", SqlDbType.VarChar, 150).Value = lstStr[14];
+                        sqlComm.Parameters.Add("@REMK", SqlDbType.VarChar, 250).Value = lstStr[15];
+                        sqlComm.Parameters.Add("@PROJID", SqlDbType.VarChar, 20).Value = lstStr[16];
+                        sqlComm.Parameters.Add("@PROJN", SqlDbType.VarChar, 250).Value = lstStr[17];
+                        sqlComm.Parameters.Add("@PROPID", SqlDbType.VarChar, 20).Value = lstStr[18];
+                        sqlComm.Parameters.Add("@PROPN", SqlDbType.VarChar, 250).Value = lstStr[19];
+                        sqlComm.Parameters.Add("@QUANT", SqlDbType.Int).Value = (lstStr[20].ToString() == "" || lstStr[20].ToString() == null ? 0 : Convert.ToInt32(lstStr[20]));
+
+                        if (lstStr[21].ToString() != "" || lstStr[22].ToString() != "")
+                        {
+                            dt = DateTime.ParseExact(lstStr[21], "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                            sqlComm.Parameters.Add("@STDDT", SqlDbType.DateTime).Value = dt.ToString("dd/MM/yyyy");
+                            dt = DateTime.ParseExact(lstStr[22], "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                            sqlComm.Parameters.Add("@ENDDT", SqlDbType.DateTime).Value = dt.ToString("dd/MM/yyyy");
+                        }
+                        else
+                        {
+                            sqlComm.Parameters.Add("@STDDT", SqlDbType.DateTime).Value = DateTime.Now;
+                            sqlComm.Parameters.Add("@ENDDT", SqlDbType.DateTime).Value = DateTime.Now;
+                        }
+
+                        //dt = DateTime.ParseExact(lstStr[21], "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                        //sqlComm.Parameters.Add("@STDDT", SqlDbType.DateTime).Value = dt.ToString("dd/MM/yyyy");
+                        //dt = DateTime.ParseExact(lstStr[22], "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                        //sqlComm.Parameters.Add("@ENDDT", SqlDbType.DateTime).Value = dt.ToString("dd/MM/yyyy");
+
+                        sqlComm.Parameters.Add("@RMDB", SqlDbType.Int).Value = (lstStr[23].ToString() == "" || lstStr[23].ToString() == null ? 0 : Convert.ToInt32(lstStr[23]));
+                        sqlComm.Parameters.Add("@ITEMS", SqlDbType.Int).Value = (lstStr[24].ToString() == "" || lstStr[24].ToString() == null ? 0 : Convert.ToInt32(lstStr[24]));
+                        sqlComm.Parameters.Add("@APPVID", SqlDbType.VarChar, 20).Value = (lstStr[25] == null ? "" : lstStr[25]);
+                        sqlComm.Parameters.Add("@APPVN", SqlDbType.VarChar, 150).Value = (lstStr[26] == null ? "" : lstStr[26]);
+                        sqlComm.Parameters.Add("@STATUS", SqlDbType.Int).Value = Convert.ToInt32(lstStr[27]);
+
+                        sqlComm.Parameters.Add("@DRNOBYITEM", SqlDbType.VarChar, 150).Value = (lstStr[28] == null ? "" : lstStr[28].ToString());
+
+                        sqlComm.Parameters.Add("@CreatedBy", SqlDbType.VarChar, 150).Value = userName;
+                        sqlComm.Parameters.Add("@UpdatedBy", SqlDbType.VarChar, 150).Value = userName;
+
+                        //sqlComm.Parameters.Add("@ACCROLE", SqlDbType.VarChar, 20).Value = "";
+
+                        sqlComm.CommandType = CommandType.StoredProcedure;
+
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = sqlComm;
+                        da.Fill(ds);
+
+                        retStr = ds.Tables[0].Rows[0].ItemArray[0].ToString();
+
+                    }
+                }
+
+                return retStr;
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+        }
+        public bool OnCommandDeleteRequisitionByRQRNO(string rqrno)
+        {
+            try
+            {
+                SqlCommand sqlComm;
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (sqlComm = new SqlCommand("[dbo].[spDeleteRequisitionByRQRNO]", conn))
+                    {
+                        sqlComm.Parameters.Add("@RQRNO", SqlDbType.VarChar, 10).Value = rqrno;
+                        sqlComm.CommandType = CommandType.StoredProcedure;
+
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = sqlComm;
+                        da.Fill(ds);
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+        }
+        public void OnCommandUpdateRequisition(List<string> lstStr, string userName)
+        {
+            //string retStr;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    SqlCommand sqlComm;
+                    DataSet ds = new DataSet();
+
+                    //using (sqlComm = new SqlCommand("[dbo].[spDeleteRequisitionByRQRNO]", conn))
+                    //{
+                    //    sqlComm.Parameters.Add("@RQRNO", SqlDbType.VarChar, 10).Value = lstStr[0];
+                    //    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    //    SqlDataAdapter da = new SqlDataAdapter();
+                    //    da.SelectCommand = sqlComm;
+                    //    da.Fill(ds);
+                    //}
+
+
+                    using (sqlComm = new SqlCommand("[dbo].[spUpdateRequisitionByRQRNO]", conn))
+                    {
+
+                        sqlComm.Parameters.Add("@RQRNO", SqlDbType.VarChar, 10).Value = lstStr[0];
+                        sqlComm.Parameters.Add("@DRNO", SqlDbType.VarChar, 25).Value = lstStr[1];
+
+                        DateTime dt;
+                        dt = DateTime.ParseExact(lstStr[2], "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                        sqlComm.Parameters.Add("@RCVD", SqlDbType.DateTime).Value = dt.ToString("dd/MM/yyyy");
+                        dt = DateTime.ParseExact(lstStr[3], "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                        sqlComm.Parameters.Add("@CURD", SqlDbType.DateTime).Value = dt.ToString("dd/MM/yyyy");
+
+                        sqlComm.Parameters.Add("@REFREQID", SqlDbType.VarChar, 10).Value = lstStr[4];
+                        sqlComm.Parameters.Add("@REQID", SqlDbType.VarChar, 10).Value = lstStr[5];
+                        sqlComm.Parameters.Add("@REQN", SqlDbType.VarChar, 150).Value = lstStr[6];
+                        sqlComm.Parameters.Add("@PROMOTID", SqlDbType.Int).Value = Convert.ToInt32(lstStr[7]);
+                        sqlComm.Parameters.Add("@PROMOTN", SqlDbType.VarChar, 150).Value = lstStr[8];
+                        sqlComm.Parameters.Add("@DEPTID", SqlDbType.VarChar, 20).Value = lstStr[9];
+                        sqlComm.Parameters.Add("@DEPTN", SqlDbType.VarChar, 150).Value = lstStr[10];
+
+                        sqlComm.Parameters.Add("@GLID", SqlDbType.Int).Value = (lstStr[11] != "" ? Convert.ToInt32(lstStr[11]) : 0);
+                        sqlComm.Parameters.Add("@GLN", SqlDbType.VarChar, 150).Value = lstStr[12];
+                        sqlComm.Parameters.Add("@OBJID", SqlDbType.Int).Value = Convert.ToInt32(lstStr[13]);
+                        sqlComm.Parameters.Add("@OBJN", SqlDbType.VarChar, 150).Value = lstStr[14];
+                        sqlComm.Parameters.Add("@REMK", SqlDbType.VarChar, 250).Value = lstStr[15];
+                        sqlComm.Parameters.Add("@PROJID", SqlDbType.VarChar, 20).Value = lstStr[16];
+                        sqlComm.Parameters.Add("@PROJN", SqlDbType.VarChar, 250).Value = lstStr[17];
+                        sqlComm.Parameters.Add("@PROPID", SqlDbType.VarChar, 20).Value = lstStr[18];
+                        sqlComm.Parameters.Add("@PROPN", SqlDbType.VarChar, 250).Value = lstStr[19];
+                        sqlComm.Parameters.Add("@RMDB", SqlDbType.Int).Value = (lstStr[20].ToString() == "" || lstStr[20].ToString() == null ? 0 : Convert.ToInt32(lstStr[20]));
+                        if (lstStr[21].ToString() != "" || lstStr[22].ToString() != "")
+                        {
+                            dt = DateTime.ParseExact(lstStr[21], "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                            sqlComm.Parameters.Add("@STDDT", SqlDbType.DateTime).Value = dt.ToString("dd/MM/yyyy");
+                            dt = DateTime.ParseExact(lstStr[22], "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                            sqlComm.Parameters.Add("@ENDDT", SqlDbType.DateTime).Value = dt.ToString("dd/MM/yyyy");
+                        }
+                        else
+                        {
+                            sqlComm.Parameters.Add("@STDDT", SqlDbType.DateTime).Value = DateTime.Now;
+                            sqlComm.Parameters.Add("@ENDDT", SqlDbType.DateTime).Value = DateTime.Now;
+                        }
+                        
+
+                        sqlComm.Parameters.Add("@QUANT", SqlDbType.Int).Value = Convert.ToInt32(lstStr[23]);
+                        sqlComm.Parameters.Add("@ITEMS", SqlDbType.Int).Value = Convert.ToInt32(lstStr[24]);
+                        sqlComm.Parameters.Add("@APPVID", SqlDbType.VarChar, 20).Value = (lstStr[25] == null ? "" : lstStr[25]);
+                        sqlComm.Parameters.Add("@APPVN", SqlDbType.VarChar, 150).Value = (lstStr[26] == null ? "" : lstStr[26]);
+                        sqlComm.Parameters.Add("@STATUS", SqlDbType.Int).Value = Convert.ToInt32(lstStr[27]);
+
+                        sqlComm.Parameters.Add("@CreatedBy", SqlDbType.VarChar, 150).Value = userName;
+                        sqlComm.Parameters.Add("@UpdatedBy", SqlDbType.VarChar, 150).Value = userName;
+
+                        //sqlComm.Parameters.Add("@ACCROLE", SqlDbType.VarChar, 20).Value = "";
+
+                        sqlComm.CommandType = CommandType.StoredProcedure;
+
+                        //sqlComm.ExecuteNonQuery();
+
+
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = sqlComm;
+                        da.Fill(ds);
+
+                        //retStr = ds.Tables[0].Rows[0].ItemArray[0].ToString();
+                    }
+
+
+                }
+
+                //return "";
+            }
+            catch (Exception ex)
+            {
+                //return "";
+            }
+        }
+        public bool OnCommandRejectRequisition(string rqrno, string reason)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand cmd = new SqlCommand("[dbo].[spRejectDataRequisition]", conn))
+                    {
+                        conn.Open();
+                        cmd.Parameters.Add("@RQRNO", SqlDbType.VarChar, 10).Value = rqrno;
+                        cmd.Parameters.Add("@REASON", SqlDbType.VarChar, 500).Value = reason;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.ExecuteNonQuery();
+                    }
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool OnCommandApproveRequisition(string rqrno)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand cmd = new SqlCommand("[dbo].[spApproveDataRequisition]", conn))
+                    {
+                        conn.Open();
+                        cmd.Parameters.Add("@RQRNO", SqlDbType.VarChar, 10).Value = rqrno;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.ExecuteNonQuery();
+                    }
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool OnCommandAcceptRequisition(string rqrno)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand cmd = new SqlCommand("[dbo].[spAcceptDataRequisition]", conn))
+                    {
+                        conn.Open();
+                        cmd.Parameters.Add("@RQRNO", SqlDbType.VarChar, 10).Value = rqrno;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.ExecuteNonQuery();
+                    }
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool OnCommandSetSentRequisition(string rqrno)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand cmd = new SqlCommand("[dbo].[spSetSentDataRequisition]", conn))
+                    {
+                        conn.Open();
+                        cmd.Parameters.Add("@RQRNO", SqlDbType.VarChar, 10).Value = rqrno;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.ExecuteNonQuery();
+                    }
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool OnCommandDeleteRequisition(string rqrno)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand cmd = new SqlCommand("[dbo].[spDeleteDataRequisition]", conn))
+                    {
+                        conn.Open();
+                        cmd.Parameters.Add("@RQRNO", SqlDbType.VarChar, 10).Value = rqrno;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.ExecuteNonQuery();
+                    }
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool OnCommandOpenRecallRequisition(string rqrno)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand cmd = new SqlCommand("[dbo].[spSetOpenRecallDataRequisition]", conn))
+                    {
+                        conn.Open();
+                        cmd.Parameters.Add("@RQRNO", SqlDbType.VarChar, 10).Value = rqrno;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.ExecuteNonQuery();
+                    }
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool OnCommandConfirmRecallRequisition(string rqrno)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand cmd = new SqlCommand("[dbo].[spSetConfirmRecallDataRequisition]", conn))
+                    {
+                        conn.Open();
+                        cmd.Parameters.Add("@RQRNO", SqlDbType.VarChar, 10).Value = rqrno;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.ExecuteNonQuery();
+                    }
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public DataTable OnCommandEditRequisition(string rqrno)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    DataSet ds = new DataSet();
+                    using (SqlCommand cmd = new SqlCommand("[dbo].[spGetRequisitionDataDetails]", conn))
+                    {
+                        cmd.Parameters.Add("@RQRNO", SqlDbType.VarChar, 10).Value = rqrno;
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = cmd;
+                        da.Fill(ds);
+                    }
+                    return ds.Tables[0];
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+        public DataTable GetRequisitionByEmpId(string empId, string mode)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand cmd = new SqlCommand("[dbo].[spGetDataRequisitionByEmpId]", conn))
+                    {
+                        conn.Open();
+                        cmd.Parameters.Add("@EMPID", SqlDbType.VarChar, 10).Value = empId;
+                        cmd.Parameters.Add("@MODE", SqlDbType.VarChar, 10).Value = mode;
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = cmd;
+                        da.Fill(ds);
+                    }
+                    return ds.Tables[0];
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        public DataTable GetDataRequisition(string EmpCode,
+                                            string docSearchID,
+                                            string tagSearchID,
+                                            string RecieveDatePicker,
+                                            string BookDatePicker,
+                                            string cbxUser,
+                                            string cbxPromotionType,
+                                            string cbxCostCenter,
+                                            string cbxObjective,
+                                            string cbxGLNo,
+                                            out string msgerr)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand cmd = new SqlCommand("[dbo].[spGetDataRequisition]", conn))
+                    {
+                        conn.Open();
+                        cmd.Parameters.Add("@EmpCode", SqlDbType.VarChar, 20).Value = EmpCode;
+
+                        cmd.Parameters.Add("@docSearchID", SqlDbType.VarChar, 20).Value = docSearchID;
+                        cmd.Parameters.Add("@tagSearchID", SqlDbType.VarChar, 20).Value = tagSearchID;
+
+                        if (RecieveDatePicker.Trim() != "")
+                        {
+                            string[] rcv = RecieveDatePicker.Split('/');
+                            cmd.Parameters.Add("@RecieveDatePicker", SqlDbType.VarChar, 10).Value = rcv[2] + "-" + rcv[1] + "-" + rcv[0];
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add("@RecieveDatePicker", SqlDbType.VarChar, 10).Value = RecieveDatePicker;
+                        }
+
+                        if (BookDatePicker.Trim() != "")
+                        {
+                            string[] cud = BookDatePicker.Split('/');
+                            cmd.Parameters.Add("@BookDatePicker", SqlDbType.VarChar, 10).Value = cud[2] + "-" + cud[1] + "-" + cud[0];
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add("@BookDatePicker", SqlDbType.VarChar, 10).Value = BookDatePicker;
+                        }
+
+                        cmd.Parameters.Add("@cbxUser", SqlDbType.VarChar, 15).Value = (cbxUser == "All" ? "" : cbxUser);
+                        cmd.Parameters.Add("@cbxPromotionType", SqlDbType.VarChar, 10).Value = (cbxPromotionType == "All" ? "" : cbxPromotionType);
+                        cmd.Parameters.Add("@cbxCostCenter", SqlDbType.VarChar, 10).Value = (cbxCostCenter == "All" ? "" : cbxCostCenter);
+                        cmd.Parameters.Add("@cbxObjective", SqlDbType.VarChar, 10).Value = (cbxObjective == "All" ? "" : cbxObjective);
+                        cmd.Parameters.Add("@cbxGLNo", SqlDbType.VarChar, 10).Value = (cbxGLNo == "All" ? "" : cbxGLNo);
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = cmd;
+                        da.Fill(ds);
+                    }
+                    msgerr = "";
+                    return ds.Tables[0];
+                }
+            }
+            catch (Exception ex)
+            {
+                msgerr = ex.Message.ToString();
+                return null;
+            }
+        }
+        public DataTable getDataMasterData(string source)
+        {
+            string STORED = (source != "right" ? "[dbo].[spGetDataMasterDatas]" : "[dbo].[spGetDataMasterGroupMapping]");
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    SqlCommand sqlComm = new SqlCommand(STORED, conn);
+                    //sqlComm.Parameters.AddWithValue("@Function", func);
+                    //sqlComm.Parameters.AddWithValue("@StartDate", startDate);
+                    //sqlComm.Parameters.AddWithValue("@EndDate", endDate);
+                    sqlComm.Parameters.AddWithValue("@Source", source);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+                    da.Fill(ds);
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+        public bool insertMasterData(string description, string reason, string startDate,
+                                     string endDate, string userName, string source, out string msgerr)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+                    SqlCommand sqlComm = new SqlCommand("[dbo].[spInsertDataMasterDatas]", conn);
+                    sqlComm.Parameters.AddWithValue("@Title", description);
+                    sqlComm.Parameters.AddWithValue("@Description", reason);
+                    if (startDate != "" && endDate != "")
+                    {
+                        DateTime _stdDate = new DateTime();
+                        DateTime _endDate = new DateTime();
+                        _stdDate = DateTime.ParseExact(startDate, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
+                        _endDate = DateTime.ParseExact(endDate, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
+
+                        sqlComm.Parameters.AddWithValue("@StartDate", _stdDate);
+                        sqlComm.Parameters.AddWithValue("@EndDate", _endDate);
+                    }
+                    else
+                    {
+                        sqlComm.Parameters.AddWithValue("@StartDate", startDate);
+                        sqlComm.Parameters.AddWithValue("@EndDate", endDate);
+                    }
+
+
+                    sqlComm.Parameters.AddWithValue("@CreatedBy", userName);
+                    sqlComm.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
+                    sqlComm.Parameters.AddWithValue("@UpdatedBy", userName);
+                    sqlComm.Parameters.AddWithValue("@UpdatedDate", DateTime.Now);
+                    sqlComm.Parameters.AddWithValue("@source", source);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    sqlComm.ExecuteNonQuery();
+                    conn.Close();
+                }
+                msgerr = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                msgerr = ex.Message.ToString();
+                return false;
+            }
+        }
+        public bool editMasterData(int id, string description, string reason, string startDate, string endDate, string userName, string source)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+                    SqlCommand sqlComm = new SqlCommand("[dbo].[spUpdateDataMasterDatas]", conn);
+                    sqlComm.Parameters.AddWithValue("@ID", id);
+                    sqlComm.Parameters.AddWithValue("@Title", description);
+                    sqlComm.Parameters.AddWithValue("@Description", reason);
+
+                    if (startDate != "" && endDate != "")
+                    {
+                        DateTime _stdDate = new DateTime();
+                        DateTime _endDate = new DateTime();
+                        _stdDate = DateTime.ParseExact((startDate.Length == 9 ? "0" + startDate : startDate), "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
+                        _endDate = DateTime.ParseExact(endDate, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
+
+                        sqlComm.Parameters.AddWithValue("@StartDate", _stdDate);
+                        sqlComm.Parameters.AddWithValue("@EndDate", _endDate);
+                    }
+                    else
+                    {
+                        sqlComm.Parameters.AddWithValue("@StartDate", startDate);
+                        sqlComm.Parameters.AddWithValue("@EndDate", endDate);
+                    }
+
+                    //sqlComm.Parameters.AddWithValue("@StartDate", (startDate != "" ? Convert.ToDateTime(startDate) : DateTime.Now));
+                    //sqlComm.Parameters.AddWithValue("@EndDate", (endDate != "" ? Convert.ToDateTime(endDate) : DateTime.Now));
+                    sqlComm.Parameters.AddWithValue("@UpdatedBy", userName);
+                    sqlComm.Parameters.AddWithValue("@UpdatedDate", DateTime.Now);
+                    sqlComm.Parameters.AddWithValue("@Source", source);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    sqlComm.ExecuteNonQuery();
+                    conn.Close();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool deleteMasterData(int id, string title, string source)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+                    SqlCommand sqlComm = new SqlCommand("[dbo].[spDeleteDataMasterDatas]", conn);
+                    sqlComm.Parameters.AddWithValue("@ID", id);
+                    sqlComm.Parameters.AddWithValue("@Title", title);
+                    sqlComm.Parameters.AddWithValue("@Source", source);
+
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    sqlComm.ExecuteNonQuery();
+                    conn.Close();
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        public DataTable GetUser()
+        {
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    SqlCommand sqlComm = new SqlCommand("[dbo].[spGetUserData]", conn);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+                    da.Fill(ds);
+                }
+                return ds.Tables[0];
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return null;
+            }
+        }
+        public DataTable GetUserEmail()
+        {
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    SqlCommand sqlComm = new SqlCommand("[dbo].[spGetUserEmailData]", conn);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+                    da.Fill(ds);
+                }
+                return ds.Tables[0];
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return null;
+            }
+        }
+        public DataTable GetGroup()
+        {
+            try
+            {
+
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    SqlCommand sqlComm = new SqlCommand("[dbo].[spGetGroupData]", conn);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+                    da.Fill(ds);
+                }
+                return ds.Tables[0];
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return null;
+            }
+        }
+        public bool saveMapping(List<SaveGroupMapping> data, string username)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+                    for (int i = 0; i < data.Count; i++)
+                    {
+                        SqlCommand sqlComm = new SqlCommand("[dbo].[spInsertDataMasterGroupMapping]", conn);
+                        sqlComm.Parameters.AddWithValue("@UserID", data[i].userID);
+                        sqlComm.Parameters.AddWithValue("@CostCenter", data[i].costCenter);
+                        sqlComm.Parameters.AddWithValue("@MasterGroupID", data[i].masterGroupID);
+                        sqlComm.Parameters.AddWithValue("@CreatedBy", username);
+                        sqlComm.CommandType = CommandType.StoredProcedure;
+                        sqlComm.ExecuteNonQuery();
+                    }
+                    conn.Close();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                return false;
+            }
+        }
+        public bool editMapping(int ID, int RIGHT, string USERNAME)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+                    SqlCommand sqlComm = new SqlCommand("[dbo].[spUpdateDataMasterGroupMapping]", conn);
+                    sqlComm.Parameters.AddWithValue("@ID", ID);
+                    sqlComm.Parameters.AddWithValue("@RIGHT", RIGHT);
+                    sqlComm.Parameters.AddWithValue("@USERNAME", USERNAME);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    sqlComm.ExecuteNonQuery();
+                    conn.Close();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public DataTable activated(int ID, string USERNAME)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+                    SqlCommand sqlComm = new SqlCommand("[dbo].[spUpdateDataMasterActivation]", conn);
+                    sqlComm.Parameters.AddWithValue("@ID", ID);
+                    sqlComm.Parameters.AddWithValue("@USERNAME", USERNAME);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+                    da.Fill(ds);
+                }
+
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        public DataTable GetUserDetailByEmpID(string EmpID)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+                    SqlCommand sqlComm = new SqlCommand("[dbo].[spGetUserDetailByEmpID]", conn);
+                    sqlComm.Parameters.AddWithValue("@EmpID", EmpID);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+                    sqlComm.CommandTimeout = 0;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+                    da.Fill(ds);
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        public DataTable GetCostCenterData(out string msgerr)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+                    SqlCommand sqlComm = new SqlCommand("[dbo].[spGetCostCenter]", conn);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+                    da.Fill(ds);
+                }
+                msgerr = "";
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                msgerr = ex.Message.ToString();
+                return null;
+            }
+        }
+        public DataTable GetItems()
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spGetItems]", sqlConn))
+                    {
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = sqlCmd;
+                        da.Fill(ds);
+                    }
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+        public string GetCostCenter(string empid)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spGetCostCenterByEmpId]", sqlConn))
+                    {
+                        sqlCmd.Parameters.Add("@EMPID", SqlDbType.VarChar, 10).Value = empid;
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = sqlCmd;
+                        da.Fill(ds);
+                    }
+                }
+                string ret = ds.Tables[0].Rows[0].ItemArray[0].ToString() + ":" + ds.Tables[0].Rows[0].ItemArray[1].ToString();
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+        }
+        private List<ListMemo> GetListMemo(List<MemoItems> data, string EmpId)
+        {
+            List<ListMemo> Memo = new List<ListMemo>();
+
+            foreach (var item in data[0].DataItemsValue)
+            {
+                ListMemo lstMemo = new ListMemo();
+                lstMemo.ItemNo = item.ItemNo;
+                lstMemo.ItemName = item.ItemName;
+                lstMemo.PricePerUnit = item.PricePerUnit;
+                lstMemo.Quantity = item.Quantity;
+                lstMemo.Type = item.Type;
+                lstMemo.TotalPrice = item.TotalPrice;
+
+                lstMemo.DocNo = data[0].DocNo;
+                lstMemo.CreateDate = data[0].CreateDate;
+                lstMemo.UsingDate = data[0].UsingDate;
+                lstMemo.EndingDate = data[0].EndingDate;
+                lstMemo.UserCreateName = data[0].UserCreateName;
+                lstMemo.CostCenterCode = data[0].CostCenterCode;
+                lstMemo.CostCenterName = data[0].CostCenterName;
+                lstMemo.Reason = data[0].Reason;
+
+                lstMemo.CreateBy = EmpId;
+
+
+                Memo.Add(lstMemo);
+            }
+            return Memo;
+        }
+        private string EditMemoItem(List<ListMemo> DataValue, string EmpId)
+        {
+            try
+            {
+                string docNo = "";
+                foreach (var item in DataValue)
+                {
+                    docNo = item.DocNo;
+                }
+
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    using (var ts = new TransactionScope())
+                    {
+                        if (sqlConn.State == ConnectionState.Closed) sqlConn.Open();
+                        using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spDeleteMemoRequest]", sqlConn))
+                        {
+                            sqlCmd.Parameters.Add("@DOCNO", SqlDbType.VarChar, 15).Value = docNo;
+                            sqlCmd.CommandType = CommandType.StoredProcedure;
+                            sqlCmd.ExecuteNonQuery();
+                        }
+
+                        DataSet ds = new DataSet();
+                        foreach (var item in DataValue)
+                        {
+
+                            using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spSaveMemoItems]", sqlConn))
+                            {
+                                sqlCmd.Parameters.Add("@DocNo", SqlDbType.VarChar, 10).Value = (docNo == "" ? item.DocNo : docNo);
+                                sqlCmd.Parameters.Add("@CreateDate", SqlDbType.Date).Value = Convert.ToDateTime(item.CreateDate);
+                                sqlCmd.Parameters.Add("@UsingDate", SqlDbType.Date).Value = Convert.ToDateTime(item.UsingDate);
+                                sqlCmd.Parameters.Add("@EndingDate", SqlDbType.Date).Value = Convert.ToDateTime(item.EndingDate);
+                                sqlCmd.Parameters.Add("@UserCreateName", SqlDbType.VarChar, 50).Value = item.UserCreateName;
+                                sqlCmd.Parameters.Add("@CostCenterCode", SqlDbType.VarChar, 10).Value = item.CostCenterCode;
+                                sqlCmd.Parameters.Add("@CostCenterName", SqlDbType.VarChar, 150).Value = item.CostCenterName;
+                                sqlCmd.Parameters.Add("@Reason", SqlDbType.VarChar, 500).Value = item.Reason;
+                                sqlCmd.Parameters.Add("@ItemNo", SqlDbType.VarChar, 15).Value = item.ItemNo;
+                                sqlCmd.Parameters.Add("@ItemName", SqlDbType.VarChar, 150).Value = item.ItemName;
+                                sqlCmd.Parameters.Add("@PricePerUnit", SqlDbType.Decimal).Value = item.PricePerUnit;
+                                sqlCmd.Parameters.Add("@Quantity", SqlDbType.Int).Value = item.Quantity;
+                                sqlCmd.Parameters.Add("@Type", SqlDbType.VarChar, 25).Value = item.Type;
+                                sqlCmd.Parameters.Add("@TotalPrice", SqlDbType.Decimal).Value = item.TotalPrice;
+                                sqlCmd.Parameters.Add("@CreateBy", SqlDbType.VarChar, 20).Value = item.CreateBy;
+
+                                sqlCmd.CommandType = CommandType.StoredProcedure;
+                                sqlCmd.ExecuteNonQuery();
+                                //SqlDataAdapter da = new SqlDataAdapter();
+                                //da.SelectCommand = sqlCmd;
+                                //da.Fill(ds);
+                                //if (ds.Tables.Count > 0)
+                                //{
+                                //    if (ds.Tables[0].Rows[0].ItemArray[0].ToString() != "")
+                                //    {
+                                //        docNo = ds.Tables[0].Rows[0].ItemArray[0].ToString();
+                                //    }
+                                //}
+                            }
+                        }
+                        ts.Complete();
+                    }
+
+                }
+
+                return docNo;
+
+                //DataSet ds = new DataSet();
+                //foreach (var item in DataValue)
+                //{
+                //    using (SqlConnection sqlConn = new SqlConnection(connStr))
+                //    {
+                //        using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spSaveMemoItems]", sqlConn))
+                //        {
+                //            sqlCmd.Parameters.Add("@DocNo", SqlDbType.VarChar, 10).Value = (docNo == "" ? item.DocNo : docNo);
+                //            sqlCmd.Parameters.Add("@CreateDate", SqlDbType.Date).Value = Convert.ToDateTime(item.CreateDate);
+                //            sqlCmd.Parameters.Add("@UsingDate", SqlDbType.Date).Value = Convert.ToDateTime(item.UsingDate);
+                //            sqlCmd.Parameters.Add("@EndingDate", SqlDbType.Date).Value = Convert.ToDateTime(item.EndingDate);
+                //            sqlCmd.Parameters.Add("@UserCreateName", SqlDbType.VarChar, 50).Value = item.UserCreateName;
+                //            sqlCmd.Parameters.Add("@CostCenterCode", SqlDbType.VarChar, 10).Value = item.CostCenterCode;
+                //            sqlCmd.Parameters.Add("@CostCenterName", SqlDbType.VarChar, 150).Value = item.CostCenterName;
+                //            sqlCmd.Parameters.Add("@Reason", SqlDbType.VarChar, 500).Value = item.Reason;
+                //            sqlCmd.Parameters.Add("@ItemNo", SqlDbType.VarChar, 15).Value = item.ItemNo;
+                //            sqlCmd.Parameters.Add("@ItemName", SqlDbType.VarChar, 150).Value = item.ItemName;
+                //            sqlCmd.Parameters.Add("@PricePerUnit", SqlDbType.Decimal).Value = item.PricePerUnit;
+                //            sqlCmd.Parameters.Add("@Quantity", SqlDbType.Int).Value = item.Quantity;
+                //            sqlCmd.Parameters.Add("@Type", SqlDbType.VarChar, 25).Value = item.Type;
+                //            sqlCmd.Parameters.Add("@TotalPrice", SqlDbType.Decimal).Value = item.TotalPrice;
+                //            sqlCmd.Parameters.Add("@CreateBy", SqlDbType.VarChar, 20).Value = item.CreateBy;
+
+                //            sqlCmd.CommandType = CommandType.StoredProcedure;
+
+                //            SqlDataAdapter da = new SqlDataAdapter();
+                //            da.SelectCommand = sqlCmd;
+                //            da.Fill(ds);
+
+                //            if (ds.Tables[0].Rows[0].ItemArray[0].ToString() != "")
+                //            {
+                //                docNo = ds.Tables[0].Rows[0].ItemArray[0].ToString();
+                //            }
+                //        }
+                //    }
+                //}
+
+
+            }
+            catch (Exception ex)
+            {
+                return ex.Message.ToString();
+            }
+        }
+        public bool SaveMemoItems(int savemode, List<MemoItems> DataValue, string EmpId, out string docno)
+        {
+            try
+            {
+                string docNo = "";
+                List<ListMemo> lstMemo = new List<ListMemo>();
+                lstMemo = GetListMemo(DataValue, EmpId);
+                if (savemode == 1)
+                {
+                    docno = EditMemoItem(lstMemo, EmpId);
+                }
+                else
+                {
+                    DataSet ds = new DataSet();
+                    foreach (var item in lstMemo)
+                    {
+                        using (SqlConnection sqlConn = new SqlConnection(connStr))
+                        {
+                            using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spSaveMemoItems]", sqlConn))
+                            {
+                                sqlCmd.Parameters.Add("@DocNo", SqlDbType.VarChar, 10).Value = (docNo == "" ? item.DocNo : docNo);
+                                sqlCmd.Parameters.Add("@CreateDate", SqlDbType.Date).Value = Convert.ToDateTime(item.CreateDate);
+                                sqlCmd.Parameters.Add("@UsingDate", SqlDbType.Date).Value = Convert.ToDateTime(item.UsingDate);
+                                sqlCmd.Parameters.Add("@EndingDate", SqlDbType.Date).Value = Convert.ToDateTime(item.EndingDate);
+                                sqlCmd.Parameters.Add("@UserCreateName", SqlDbType.VarChar, 50).Value = item.UserCreateName;
+                                sqlCmd.Parameters.Add("@CostCenterCode", SqlDbType.VarChar, 10).Value = item.CostCenterCode;
+                                sqlCmd.Parameters.Add("@CostCenterName", SqlDbType.VarChar, 150).Value = item.CostCenterName;
+                                sqlCmd.Parameters.Add("@Reason", SqlDbType.VarChar, 500).Value = item.Reason;
+                                sqlCmd.Parameters.Add("@ItemNo", SqlDbType.VarChar, 15).Value = item.ItemNo;
+                                sqlCmd.Parameters.Add("@ItemName", SqlDbType.VarChar, 150).Value = item.ItemName;
+                                sqlCmd.Parameters.Add("@PricePerUnit", SqlDbType.Decimal).Value = item.PricePerUnit;
+                                sqlCmd.Parameters.Add("@Quantity", SqlDbType.Int).Value = item.Quantity;
+                                sqlCmd.Parameters.Add("@Type", SqlDbType.VarChar, 25).Value = item.Type;
+                                sqlCmd.Parameters.Add("@TotalPrice", SqlDbType.Decimal).Value = item.TotalPrice;
+                                sqlCmd.Parameters.Add("@CreateBy", SqlDbType.VarChar, 20).Value = item.CreateBy;
+
+                                sqlCmd.CommandType = CommandType.StoredProcedure;
+
+                                SqlDataAdapter da = new SqlDataAdapter();
+                                da.SelectCommand = sqlCmd;
+                                da.Fill(ds);
+
+                                if (ds.Tables[0].Rows[0].ItemArray[0].ToString() != "")
+                                {
+                                    docNo = ds.Tables[0].Rows[0].ItemArray[0].ToString();
+                                }
+                            }
+                        }
+                    }
+                    docno = docNo;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                docno = "";
+                return false;
+            }
+        }
+        public DataTable GetDataMemo(string DocNo, string StdDate, string EndDate, string status, string empcode)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spGetDataMemoRequest]", sqlConn))
+                    {
+                        /*
+                         M20160001
+                         2016-10-01
+                         2016-10-31
+                         */
+
+                        sqlCmd.Parameters.Add("@DOCUNO", SqlDbType.VarChar, 9).Value = DocNo;
+
+                        DateTime stdDttime = new DateTime();
+                        DateTime endDttime = new DateTime();
+                        if (StdDate != "" || EndDate != "")
+                        {
+                            string day, month, year;
+
+                            //StdDate
+                            month = (StdDate.Split('/')[1].Length == 1 ? '0' + StdDate.Split('/')[1].ToString() : StdDate.Split('/')[1].ToString());
+                            year = StdDate.Split('/')[2].ToString();
+                            stdDttime = DateTime.ParseExact("01" + "/" + month + "/" + year, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
+
+                            //EndDate
+                            day = (EndDate.Split('/')[0].Length == 1 ? '0' + EndDate.Split('/')[0].ToString() : EndDate.Split('/')[0].ToString());
+                            month = (EndDate.Split('/')[1].Length == 1 ? '0' + EndDate.Split('/')[1].ToString() : EndDate.Split('/')[1].ToString());
+                            year = EndDate.Split('/')[2].ToString();
+                            endDttime = DateTime.ParseExact(day + "/" + month + "/" + year, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
+
+                            sqlCmd.Parameters.Add("@STDDATE", SqlDbType.VarChar, 10).Value = stdDttime.ToString("yyyy-MM-dd").ToString();
+                            sqlCmd.Parameters.Add("@ENDDATE", SqlDbType.VarChar, 10).Value = endDttime.ToString("yyyy-MM-dd").ToString();
+                        }
+                        else
+                        {
+                            sqlCmd.Parameters.Add("@STDDATE", SqlDbType.VarChar, 10).Value = StdDate;
+                            sqlCmd.Parameters.Add("@ENDDATE", SqlDbType.VarChar, 10).Value = EndDate;
+                        }
+
+                        sqlCmd.Parameters.Add("@STATUS", SqlDbType.VarChar, 1).Value = status;
+
+                        sqlCmd.Parameters.Add("@EMPCODE", SqlDbType.VarChar, 10).Value = empcode;
+
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = sqlCmd;
+                        da.Fill(ds);
+                    }
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+        public DataTable GetDataMemoByDocID(string DocNo)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spGetDataMemoRequestByID]", sqlConn))
+                    {
+                        sqlCmd.Parameters.Add("@DOCNO", SqlDbType.VarChar, 9).Value = DocNo;
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = sqlCmd;
+                        da.Fill(ds);
+                    }
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+        public string GetUserPositionByDocNo(string DocNo)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spGetUserPositionByDocNo]", sqlConn))
+                    {
+                        sqlCmd.Parameters.Add("@DOCNO", SqlDbType.VarChar, 9).Value = DocNo;
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = sqlCmd;
+                        da.Fill(ds);
+                    }
+                }
+                string data = ds.Tables[0].Rows[0].ItemArray[0].ToString() + '|' + ds.Tables[0].Rows[0].ItemArray[0].ToString();
+                return ds.Tables[0].Rows[0].ItemArray[0].ToString();
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+        }
+        public DataTable GetGLData()
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+                    SqlCommand sqlComm = new SqlCommand("[dbo].[spGetMasterGL]", conn);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+                    da.Fill(ds);
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        public DataTable GetProdutcDetailsData()
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+                    SqlCommand sqlComm = new SqlCommand("[dbo].[spGetDataPromotionItems]", conn);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+                    da.Fill(ds);
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        public DataTable GetProjectsData()
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+                    SqlCommand sqlComm = new SqlCommand("[dbo].[spGetDataProjects]", conn);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+                    da.Fill(ds);
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        public DataTable GetObjectiveData()
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+                    SqlCommand sqlComm = new SqlCommand("[dbo].[spGetMasterReason]", conn);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+                    da.Fill(ds);
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        public DataTable GetListItemsMemoByDocNo(string docno, string itemno, out string msgerr)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection sqlCon = new SqlConnection(connStr))
+                {
+                    if (sqlCon.State == ConnectionState.Closed) sqlCon.Open();
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spGetItemsMemoByDocNo]", sqlCon))
+                    {
+                        sqlCmd.Parameters.Add("@DOCNO", SqlDbType.VarChar, 12).Value = docno;
+                        sqlCmd.Parameters.Add("@ITEMNO", SqlDbType.VarChar, 30).Value = itemno;
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = sqlCmd;
+                        da.Fill(ds);
+                    }
+                }
+                msgerr = "";
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                msgerr = ex.Message.ToString();
+                return new DataTable();
+            }
+        }
+        public DataTable GetMemoData(string empid, out string msgerr)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+                    SqlCommand sqlComm = new SqlCommand("[dbo].[GetMemoData]", conn);
+                    sqlComm.Parameters.Add("@EMPCODE", SqlDbType.VarChar, 10).Value = empid;
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+                    da.Fill(ds);
+                }
+                msgerr = "";
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                msgerr = ex.Message.ToString();
+                return null;
+            }
+        }
+        public DataTable GetUserByType(int type)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+                    SqlCommand sqlComm = new SqlCommand("[dbo].[spGetRolesByRoleCode]", conn);
+                    sqlComm.Parameters.AddWithValue("@Key", type);
+                    sqlComm.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter();
+                    da.SelectCommand = sqlComm;
+                    da.Fill(ds);
+                }
+
+                return ds.Tables[0];
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        public string GetUserEmailByuserGUID(string USERGUID)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spGetUserEmailByuserGUID]", sqlConn))
+                    {
+                        sqlCmd.Parameters.Add("@USERGUID", SqlDbType.VarChar, 100).Value = USERGUID;
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = sqlCmd;
+                        da.Fill(ds);
+                    }
+                }
+                return ds.Tables[0].Rows[0].ItemArray[0].ToString();
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+        }
+        public string GetUserGUIDByUserId(string USERID)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spGetUserGUIDByUserId]", sqlConn))
+                    {
+                        sqlCmd.Parameters.Add("@USERID", SqlDbType.Int).Value = Convert.ToInt32(USERID);
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = sqlCmd;
+                        da.Fill(ds);
+                    }
+                }
+                return ds.Tables[0].Rows[0].ItemArray[0].ToString();
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+        }
+        public DataTable GetUserByMemoDocNo(string docno)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spGetUserByMemoDocNo]", sqlConn))
+                    {
+                        sqlCmd.Parameters.Add("@DOCNO", SqlDbType.VarChar, 9).Value = docno;
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = sqlCmd;
+                        da.Fill(ds);
+                    }
+                }
+                return ds.Tables[0];
+            }
+            catch (Exception)
+            {
+                return new DataTable();
+            }
+        }
+        public int GetMemoStatus(string docno)
+        {
+            try
+            {
+                int status = 0;
+                DataSet ds = new DataSet();
+                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                {
+                    using (SqlCommand sqlCmd = new SqlCommand("[dbo].[spCheckStatusBeforeApproveReturnStatus]", sqlConn))
+                    {
+                        sqlCmd.Parameters.Add("@DOCNO", SqlDbType.VarChar, 9).Value = docno;
+                        sqlCmd.CommandType = CommandType.StoredProcedure;
+
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = sqlCmd;
+                        da.Fill(ds);
+                    }
+                }
+
+                if (ds.Tables[0].Rows.Count != 0)
+                {
+                    status = Convert.ToInt32(ds.Tables[0].Rows[0].ItemArray[0]);
+                }
+
+                return status; //ds.Tables[0].Rows[0].ItemArray[0];
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
+
+        public double GetPRItemPriceByReqNo(string rcvPrmId, string materialId, out string msgerr)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection SqlConn = new SqlConnection(connStr))
+                {
+                    if (SqlConn.State == ConnectionState.Closed) SqlConn.Open();
+                    using (SqlCommand SqlCmd = new SqlCommand("[dbo].[spGetPRItemPriceByReqNo]", SqlConn))
+                    {
+                        SqlCmd.Parameters.Add("@rcvPrmId", SqlDbType.VarChar, 15).Value = rcvPrmId;
+                        SqlCmd.Parameters.Add("@materialId", SqlDbType.VarChar, 20).Value = materialId;
+                        SqlCmd.CommandType = CommandType.StoredProcedure;
+                        SqlCmd.ExecuteNonQuery();
+                        
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = SqlCmd;
+                        da.Fill(ds);
+                    }
+                }
+                msgerr = "";
+                return Convert.ToDouble(ds.Tables[0].Rows[0].ItemArray[0]);
+            }
+            catch (Exception ex)
+            {
+                msgerr = ex.Message.ToString();
+                return 0;
+            }
+        }
+
+        public double GetPriceFromMasterItemByMasterId(int mstItemId, out string msgerr)
+        {
+            try
+            {
+                DataSet ds = new DataSet();
+                using (SqlConnection SqlConn = new SqlConnection(connStr))
+                {
+                    if (SqlConn.State == ConnectionState.Closed) SqlConn.Open();
+                    using (SqlCommand SqlCmd = new SqlCommand("[dbo].[spGetPriceFromMasterItemByMasterId]", SqlConn))
+                    {
+                        SqlCmd.Parameters.Add("@mstItemId", SqlDbType.VarChar, 15).Value = mstItemId;
+                        SqlCmd.CommandType = CommandType.StoredProcedure;
+
+                        SqlDataAdapter da = new SqlDataAdapter();
+                        da.SelectCommand = SqlCmd;
+                        da.Fill(ds);
+                    }
+                }
+                msgerr = "";
+                return Convert.ToDouble(ds.Tables[0].Rows[0].ItemArray[0]);
+            }
+            catch (Exception ex)
+            {
+                msgerr = ex.Message.ToString();
+                return 0;
+            }
+        }
+
+        public class Activated
+        {
+            public string Status { get; set; }
+        }
+        public class SaveGroupMapping
+        {
+            public string userID { get; set; }
+            public string costCenter { get; set; }
+            public string masterGroupID { get; set; }
+        }
+        private class ListDataID
+        {
+            public int MODE { get; set; }
+            public string USERNAME { get; set; }
+            public string COMP_CODE { get; set; }
+            public string DOC_DATE { get; set; }
+            public string PSTNG_DATE { get; set; }
+            public string FISC_YEAR { get; set; }
+            public string DOC_TYPE { get; set; }
+            public string REF_DOC_NO { get; set; }
+            public string REF_KEY_3 { get; set; }
+            public string CURRENCY { get; set; }
+            public double AMT_DOCCUR { get; set; }
+            public string ID { get; set; }
+        }
+        private class ListCrossData
+        {
+            public int MODE { get; set; }
+            public string ID { get; set; }
+            public string USERNAME { get; set; }
+            public string DOC_DATE { get; set; }
+            public string PSTNG_DATE { get; set; }
+            public string FISC_YEAR { get; set; }
+            public string PAYABLE_DOC_TYPE { get; set; }
+            public string CUTSTOCK_DOC_TYPE { get; set; }
+            public string RECEIVEABLE_DOC_TYPE { get; set; }
+            public string REF_DOC_NO { get; set; }
+            public string REF_KEY_3 { get; set; }
+            public string CURRENCY { get; set; }
+            public string BUSINESSPLACE { get; set; }
+            public string VENDOR_NO { get; set; }
+        }
+        private class ListMemo
+        {
+            public string DocNo { get; set; }
+            public string CreateDate { get; set; }
+            public string UsingDate { get; set; }
+            public string EndingDate { get; set; }
+            public string UserCreateName { get; set; }
+            public string CostCenterCode { get; set; }
+            public string CostCenterName { get; set; }
+            public string Reason { get; set; }
+            public string ItemNo { get; set; }
+            public string ItemName { get; set; }
+            public string PricePerUnit { get; set; }
+            public string Quantity { get; set; }
+            public string Type { get; set; }
+            public string TotalPrice { get; set; }
+            public string CreateBy { get; set; }
+        }
+        #endregion
+
+    }
+}

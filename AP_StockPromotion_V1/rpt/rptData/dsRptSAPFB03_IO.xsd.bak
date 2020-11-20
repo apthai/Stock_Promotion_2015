@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dsRptSAPFB03_IO" targetNamespace="http://tempuri.org/dsRptSAPFB03_IO.xsd" xmlns:mstns="http://tempuri.org/dsRptSAPFB03_IO.xsd" xmlns="http://tempuri.org/dsRptSAPFB03_IO.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dsRptSAPFB03_IO" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="dsRptSAPFB03_IO" msprop:Generator_UserDSName="dsRptSAPFB03_IO">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="dtRptSAPFB03_IO" msprop:Generator_TableClassName="dtRptSAPFB03_IODataTable" msprop:Generator_TableVarName="tabledtRptSAPFB03_IO" msprop:Generator_RowChangedName="dtRptSAPFB03_IORowChanged" msprop:Generator_TablePropName="dtRptSAPFB03_IO" msprop:Generator_RowDeletingName="dtRptSAPFB03_IORowDeleting" msprop:Generator_RowChangingName="dtRptSAPFB03_IORowChanging" msprop:Generator_RowEvHandlerName="dtRptSAPFB03_IORowChangeEventHandler" msprop:Generator_RowDeletedName="dtRptSAPFB03_IORowDeleted" msprop:Generator_RowClassName="dtRptSAPFB03_IORow" msprop:Generator_UserTableName="dtRptSAPFB03_IO" msprop:Generator_RowEvArgName="dtRptSAPFB03_IORowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+			    <xs:element name="CostCenter" msprop:Generator_ColumnVarNameInTable="CostCenter" msprop:Generator_ColumnPropNameInRow="columnCostCenter" msprop:Generator_ColumnPropNameInTable="CostCenterColumn" msprop:Generator_UserColumnName="CostCenter"	type="xs:string" minOccurs="0" />
+                <xs:element name="ItemName" type="xs:string" minOccurs="0" />
+                <xs:element name="isNonePR" type="xs:string" minOccurs="0" />
+                <xs:element name="GLNo" type="xs:string" minOccurs="0" />
+                <xs:element name="GLName" type="xs:string" minOccurs="0" />
+                <xs:element name="ProfitCenter" type="xs:string" minOccurs="0" />
+                <xs:element name="Amount" type="xs:int" minOccurs="0" />
+                <xs:element name="Total" type="xs:decimal" minOccurs="0" />
+                <xs:element name="TotalCredit" type="xs:decimal" minOccurs="0" />
+                <xs:element name="ItemText" type="xs:string" minOccurs="0" />
+				
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

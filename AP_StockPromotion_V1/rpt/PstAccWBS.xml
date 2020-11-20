@@ -1,0 +1,70 @@
+<?xml version="1.0" standalone="yes"?>
+<NewDataSet>
+  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="WBS" msdata:CaseSensitive="False" msdata:Locale="en-US">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="WBS_SAP" type="xs:string" minOccurs="0" />
+                <xs:element name="ItemName" type="xs:string" minOccurs="0" />
+                <xs:element name="isNonePR" type="xs:string" minOccurs="0" />
+                <xs:element name="CostCenter" type="xs:string" minOccurs="0" />
+                <xs:element name="GLNo" type="xs:string" minOccurs="0" />
+                <xs:element name="GLName" type="xs:string" minOccurs="0" />
+                <xs:element name="ProfitCenter" type="xs:string" minOccurs="0" />
+                <xs:element name="Amount" type="xs:int" minOccurs="0" />
+                <xs:element name="Total" type="xs:decimal" minOccurs="0" />
+                <xs:element name="TotalCredit" type="xs:decimal" minOccurs="0" />
+                <xs:element name="ItemText" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <WBS>
+    <WBS_SAP>1/175-CO-P2-B11-P-004</WBS_SAP>
+    <ItemName>บัตรชมภาพยนตร์ Major Cineplex</ItemName>
+    <isNonePR>N</isNonePR>
+    <GLNo>0006011020</GLNo>
+    <GLName>ค่าใช้จ่ายส่งเสริมการขายโครงการ(WBS)</GLName>
+    <Total>279.9976</Total>
+    <ItemText>บัตรชมภาพยนตร์ Major Cineplex 2 09.2015</ItemText>
+  </WBS>
+  <WBS>
+    <WBS_SAP>1/175-CO-P2-B11-P-005</WBS_SAP>
+    <ItemName>บัตร BTS</ItemName>
+    <isNonePR>N</isNonePR>
+    <GLNo>0006011020</GLNo>
+    <GLName>ค่าใช้จ่ายส่งเสริมการขายโครงการ(WBS)</GLName>
+    <Total>800.0000</Total>
+    <ItemText>บัตร BTS 4 09.2015</ItemText>
+  </WBS>
+  <WBS>
+    <WBS_SAP>1/175-CO-P2-B11-P-004</WBS_SAP>
+    <ItemName>บัตรเติมน้ำมัน</ItemName>
+    <isNonePR>N</isNonePR>
+    <GLNo>0006011020</GLNo>
+    <GLName>ค่าใช้จ่ายส่งเสริมการขายโครงการ(WBS)</GLName>
+    <Total>4000.0000</Total>
+    <ItemText>บัตรเติมน้ำมัน 4 09.2015</ItemText>
+  </WBS>
+  <WBS>
+    <WBS_SAP>1/175-CO-P2-B11-P-005</WBS_SAP>
+    <ItemName>บัตรเติมน้ำมัน</ItemName>
+    <isNonePR>N</isNonePR>
+    <GLNo>0006011020</GLNo>
+    <GLName>ค่าใช้จ่ายส่งเสริมการขายโครงการ(WBS)</GLName>
+    <Total>5000.0000</Total>
+    <ItemText>บัตรเติมน้ำมัน 5 09.2015</ItemText>
+  </WBS>
+  <WBS>
+    <GLNo>0001580010</GLNo>
+    <GLName>สินทรัพย์ส่งเสริมการขาย</GLName>
+    <ProfitCenter>P11000</ProfitCenter>
+    <TotalCredit>-10079.9976</TotalCredit>
+  </WBS>
+</NewDataSet>

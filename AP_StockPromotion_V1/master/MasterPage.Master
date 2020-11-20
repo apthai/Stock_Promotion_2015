@@ -1,0 +1,366 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MasterPage.master.cs" Inherits="AP_StockPromotion_V1.master.MasterPage" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <title></title>
+
+    <link rel="shortcut icon" href="/img/ap25tp.png" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+    <script src="../script/script1.js"></script>
+
+    <script src="../ace/assets/js/jquery.js"></script>
+    <script src="../ace/assets/js/jquery-ui.js"></script>
+    <script src="../ace/jquery-2.1.3.min.js"></script>
+
+    <!-- dropdownlist with search -->
+    <link href="../plugin/select2-4.0.0-rc.2/dist/css/select2.css" rel="stylesheet" />
+    <script src="../plugin/select2-4.0.0-rc.2/dist/js/select2.full.js"></script>
+    <!-- $(".js-example-basic-single").select2(); -->
+
+    <script src="../plugin/jquery.bpopup.min.js"></script>
+
+    <link href="../ace/assets/css/colorbox.css" rel="stylesheet" />
+    <script src="../plugin/colorbox-master/jquery.colorbox.js"></script>
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="../ace/assets/css/bootstrap.css" />
+    <link rel="stylesheet" href="../ace/assets/css/font-awesome.css" />
+
+    <!-- page specific plugin styles -->
+
+    <!-- text fonts -->
+    <link rel="stylesheet" href="../ace/assets/css/ace-fonts.css" />
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="../ace/assets/css/ace.css" class="ace-main-stylesheet" />
+
+    <link rel="stylesheet" href="../ace/assets/summernote/summernote.css" />
+
+    <link rel="stylesheet" href="../ace/assets/css/chosen.css" />
+
+    <script src="../ace/assets/js/ace-extra.js"></script>
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+
+    <style type="text/css">
+        .logo {
+            height: 60px;
+            width: 40px;
+        }
+
+        .label-center {
+            text-align: center;
+        }
+    </style>
+    <script type="text/javascript">
+
+        function setLoading() {
+            $.blockUI({
+                baseZ: 2000,
+                css: {
+                    border: 'none',
+                    padding: '15px',
+                    backgroundColor: '#000',
+                    '-webkit-border-radius': '10px',
+                    '-moz-border-radius': '10px',
+                    opacity: .5,
+                    color: '#fff'
+                }
+            });
+            setTimeout($.unblockUI, 2000);
+        }
+
+        $(document).ready(function () {
+
+            $('ul li a').click(function (e) {
+                localStorage.setItem('MID', $(this).parent().attr('id'));
+            });
+
+            if (localStorage.getItem('MID') !== "") {
+                if (localStorage.getItem('MID') !== null) {
+
+                    console.log(localStorage.getItem('MID'));
+                    console.log($('#' + localStorage.getItem('MID') + '').parent().parent().attr('id'));
+
+                    if ($('#' + localStorage.getItem('MID') + '').parent().parent().attr('id') !== undefined) {
+                        if ($('#' + localStorage.getItem('MID') + '').parent().parent().attr('id').split(':').length == 2) {
+                            $('#' + localStorage.getItem('MID') + '').parent().parent().addClass('open');
+                            $('#' + localStorage.getItem('MID') + '').addClass('active');
+                        }
+                        else {
+                            $('#' + localStorage.getItem('MID') + '').addClass('active');
+                        }
+                    }
+                    else {
+                        $('#' + localStorage.getItem('MID') + '').addClass('active');
+                    }
+                } else {
+                    localStorage.setItem('MID', 'M0');
+                    $('#' + localStorage.getItem('MID') + '').addClass('active');
+                }
+            }
+        });
+
+        function formatCurrency(n, d) {
+            return n.toFixed(d).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+        }
+
+        function relogin() {
+            localStorage.setItem('ID', 0);
+            alert('Session Timeout!');
+            window.location = '../loginX.aspx';
+        }
+        function firstlogin() {
+            localStorage.setItem('ID', 0);
+            window.location = '../loginX.aspx';
+        }
+        function setProgressEvent() {
+
+        }
+    </script>
+</head>
+
+<body class="no-skin">
+
+    <!-- #section:basics/navbar.layout -->
+    <div id="navbar" class="navbar navbar-default">
+        <%--navbar-fixed-top--%>
+        <script type="text/javascript">
+            try { ace.settings.check('navbar', 'fixed') } catch (e) { }
+        </script>
+
+        <div class="navbar-container" id="navbar-container">
+            <!-- #section:basics/sidebar.mobile.toggle -->
+            <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+                <span class="sr-only">Toggle sidebar</span>
+
+                <span class="icon-bar"></span>
+
+                <span class="icon-bar"></span>
+
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- /section:basics/sidebar.mobile.toggle -->
+            <div class="navbar-header pull-left">
+                <!-- #section:basics/navbar.layout.brand -->
+                <a href="Default.aspx" class="navbar-brand">
+                    <div class="col-sm-3">
+                        <img src="http://helpdesk.apthai.com/Resources/logo_200x320.png" class="logo" />
+                    </div>
+                    <div class="col-sm-9" style="vertical-align: text-bottom;">
+                        <small>
+                            <%--<i class="fa fa-leaf"></i>--%>
+                            <br />
+                            <b>Stock Promotion</b>
+                            <br />
+                            <%--<b>(Local)</b>--%>
+                        </small>
+                    </div>
+                </a>
+
+            </div>
+
+            <!-- #section:basics/navbar.dropdown -->
+            <div class="navbar-buttons navbar-header pull-right" role="navigation" style="vertical-align: sub;">
+                <br />
+                <br />
+                <ul class="nav ace-nav">
+                    <!-- #section:basics/navbar.user_menu -->
+                    <li class="light-blue">
+                        <span class="user-info">
+                            <asp:Label ID="lbUserId" runat="server" Text=""></asp:Label>
+                            <br />
+                            <asp:Label ID="lbUserName" runat="server" Text=""></asp:Label>
+                        </span>
+                    </li>
+
+                    <!-- /section:basics/navbar.user_menu -->
+                </ul>
+            </div>
+
+            <!-- /section:basics/navbar.dropdown -->
+        </div>
+        <!-- /.navbar-container -->
+    </div>
+
+    <!-- /section:basics/navbar.layout -->
+    <div class="main-container" id="main-container">
+        <script type="text/javascript">
+            try { ace.settings.check('main-container', 'fixed') } catch (e) { }
+        </script>
+
+        <!-- #section:basics/sidebar -->
+        <div id="sidebar" class="sidebar responsive ">
+            <%--sidebar-fixed--%>
+            <script type="text/javascript">
+
+                try { ace.settings.check('sidebar', 'fixed') } catch (e) { }
+            </script>
+
+            <!-- /.sidebar-shortcuts -->
+
+            <asp:Literal ID="ltrMenu" runat="server"></asp:Literal>
+
+            <!-- /.nav-list -->
+
+            <!-- #section:basics/sidebar.layout.minimize -->
+            <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+                <i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+            </div>
+
+            <!-- /section:basics/sidebar.layout.minimize -->
+            <script type="text/javascript">
+                try { ace.settings.check('sidebar', 'collapsed') } catch (e) { }
+            </script>
+        </div>
+
+        <!-- /section:basics/sidebar -->
+        <div class="main-content">
+            <div class="main-content-inner">
+                <!-- #section:basics/content.breadcrumbs -->
+                <div class="breadcrumbs" id="breadcrumbs">
+                    <script type="text/javascript">
+                        try { ace.settings.check('breadcrumbs', 'fixed'); } catch (e) { }
+                    </script>
+
+                    <!-- /section:basics/content.searchbox -->
+                    <div id="divNavx" class="col-sm-12" style="color: #4c8fbd; position: relative; font-weight: bold; font-size: 14px;"></div>
+                </div>
+
+                <!-- /section:basics/content.breadcrumbs -->
+                <div class="page-content">
+
+                    <!-- /section:settings.box -->
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <!-- PAGE CONTENT BEGINS -->
+
+                            <div>
+
+                                <form id="form1" runat="server">
+                                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                                    </asp:ContentPlaceHolder>
+
+                                    <div id="modalalert" title="">
+                                        <p>
+                                            <asp:Label ID="lbAlert" runat="server" Text=""></asp:Label>
+                                        </p>
+                                    </div>
+                                    <%--<div id="modalProgress">
+                                        <img src="/img/Processing.gif" />
+                                    </div>--%>
+                                </form>
+                            </div>
+                            <!-- PAGE CONTENT ENDS -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.page-content -->
+            </div>
+        </div>
+        <!-- /.main-content -->
+
+        <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+            <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+        </a>
+    </div>
+    <!-- /.main-container -->
+
+    <!-- basic scripts -->
+
+    <!--[if !IE]> -->
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='../ace/assets/js/jquery.js'>" + "<" + "/script>");
+    </script>
+
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='../assets/js/jquery.js'>" + "<" + "/script>");
+    </script>
+
+    <!-- <![endif]-->
+
+    <script type="text/javascript">
+        if ('ontouchstart' in document.documentElement) document.write("<script src='../ace/assets/js/jquery.mobile.custom.js'>" + "<" + "/script>");
+    </script>
+
+    <script src="../ace/assets/js/bootstrap.js"></script>
+
+    <!-- page specific plugin scripts -->
+    <script src="../ace/assets/js/jquery-ui.js"></script>
+    <script src="../ace/assets/js/jquery.ui.touch-punch.js"></script>
+    <script src="../ace/assets/js/fuelux/fuelux.wizard.js"></script>
+    <script src="../ace/assets/js/bootbox.js"></script>
+    <script src="../ace/assets/js/jquery.blockUI.js"></script>
+
+    <!-- page specific plugin scripts -->
+
+    <!-- ace scripts -->
+
+    <script src="../ace/assets/js/ace/elements.scroller.js"></script>
+    <script src="../ace/assets/js/ace/elements.colorpicker.js"></script>
+    <script src="../ace/assets/js/ace/elements.fileinput.js"></script>
+    <script src="../ace/assets/js/ace/elements.typeahead.js"></script>
+    <script src="../ace/assets/js/ace/elements.wysiwyg.js"></script>
+    <script src="../ace/assets/js/ace/elements.spinner.js"></script>
+    <script src="../ace/assets/js/ace/elements.treeview.js"></script>
+    <script src="../ace/assets/js/ace/elements.wizard.js"></script>
+    <script src="../ace/assets/js/ace/elements.aside.js"></script>
+    <script src="../ace/assets/js/ace/ace.js"></script>
+    <script src="../ace/assets/js/ace/ace.ajax-content.js"></script>
+    <script src="../ace/assets/js/ace/ace.touch-drag.js"></script>
+    <script src="../ace/assets/js/ace/ace.sidebar.js"></script>
+    <script src="../ace/assets/js/ace/ace.sidebar-scroll-1.js"></script>
+    <script src="../ace/assets/js/ace/ace.submenu-hover.js"></script>
+    <script src="../ace/assets/js/ace/ace.widget-box.js"></script>
+    <script src="../ace/assets/js/ace/ace.settings.js"></script>
+    <script src="../ace/assets/js/ace/ace.settings-rtl.js"></script>
+    <script src="../ace/assets/js/ace/ace.settings-skin.js"></script>
+    <script src="../ace/assets/js/ace/ace.widget-on-reload.js"></script>
+    <script src="../ace/assets/js/ace/ace.searchbox-autocomplete.js"></script>
+    <script src="../ace/assets/js/moment.js"></script>
+    <script src="../ace/assets/js/autoNumeric.js"></script>
+    <script src="../ace/assets/summernote/summernote.js"></script>
+
+    <script src="../ace/assets/js/dataTables/jquery.dataTables.js"></script>
+    <script src="../ace/assets/js/dataTables/jquery.dataTables.bootstrap.js"></script>
+    <script src="../ace/assets/js/dataTables/extensions/TableTools/js/dataTables.tableTools.js"></script>
+    <script src="../ace/assets/js/dataTables/extensions/ColVis/js/dataTables.colVis.js"></script>
+
+    <script src="../ace/assets/js/chosen.jquery.js"></script>
+
+    <!-- inline scripts related to this page -->
+
+    <!-- the following scripts are used in demo only for onpage help and you don't need them -->
+    <link rel="stylesheet" href="../ace/assets/css/ace.onpage-help.css" />
+    <link rel="stylesheet" href="../ace/docs/assets/js/themes/sunburst.css" />
+
+    <script type="text/javascript"> ace.vars['base'] = '..'; </script>
+    <script src="../ace/assets/js/ace/elements.onpage-help.js"></script>
+    <script src="../ace/assets/js/ace/ace.onpage-help.js"></script>
+    <script src="../ace/docs/assets/js/rainbow.js"></script>
+    <script src="../ace/docs/assets/js/language/generic.js"></script>
+    <script src="../ace/docs/assets/js/language/html.js"></script>
+    <script src="../ace/docs/assets/js/language/css.js"></script>
+    <script src="../ace/docs/assets/js/language/javascript.js"></script>
+
+    <link rel="stylesheet" href="../ace/assets/css/bootstrap.css" />
+    <link rel="stylesheet" href="../ace/assets/css/font-awesome.css" />
+    <link rel="stylesheet" href="../ace/assets/css/jquery-ui.css" />
+    <link rel="stylesheet" href="../ace/assets/css/ace-fonts.css" />
+    <link rel="stylesheet" href="../ace/assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
+    <script src="../ace/assets/js/ace-extra.js"></script>
+
+</body>
+</html>

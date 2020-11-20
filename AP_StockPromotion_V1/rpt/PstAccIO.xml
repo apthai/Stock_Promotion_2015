@@ -1,0 +1,42 @@
+<?xml version="1.0" standalone="yes"?>
+<NewDataSet>
+  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="IO" msdata:CaseSensitive="False" msdata:Locale="en-AU">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="CostCenter" type="xs:string" minOccurs="0" />
+                <xs:element name="ItemName" type="xs:string" minOccurs="0" />
+                <xs:element name="isNonePR" type="xs:string" minOccurs="0" />
+                <xs:element name="GLNo" type="xs:string" minOccurs="0" />
+                <xs:element name="GLName" type="xs:string" minOccurs="0" />
+                <xs:element name="ProfitCenter" type="xs:string" minOccurs="0" />
+                <xs:element name="Amount" type="xs:int" minOccurs="0" />
+                <xs:element name="Total" type="xs:decimal" minOccurs="0" />
+                <xs:element name="TotalCredit" type="xs:decimal" minOccurs="0" />
+                <xs:element name="ItemText" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <IO>
+    <CostCenter>MPC2053</CostCenter>
+    <ItemName>บัตร BTS มูลค่า 100 บาท</ItemName>
+    <isNonePR>Y</isNonePR>
+    <GLNo>0006010113</GLNo>
+    <GLName>Production - Others</GLName>
+    <Total>958.72</Total>
+    <ItemText>O-บัตร BTS มูลค่า 100 บาท 4</ItemText>
+  </IO>
+  <IO>
+    <GLNo>0001580010</GLNo>
+    <GLName>สินทรัพย์ส่งเสริมการขาย</GLName>
+    <ProfitCenter>P11000</ProfitCenter>
+    <TotalCredit>-958.72</TotalCredit>
+  </IO>
+</NewDataSet>

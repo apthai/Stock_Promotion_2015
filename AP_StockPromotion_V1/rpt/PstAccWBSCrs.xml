@@ -1,0 +1,161 @@
+<?xml version="1.0" standalone="yes"?>
+<NewDataSet>
+  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="dt1" msdata:CaseSensitive="False" msdata:Locale="en-US">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="ItemNo" type="xs:string" minOccurs="0" />
+                <xs:element name="ItemName" type="xs:string" minOccurs="0" />
+                <xs:element name="CostCenter" type="xs:string" minOccurs="0" />
+                <xs:element name="ProfitCenterHO" type="xs:string" minOccurs="0" />
+                <xs:element name="GLNo" type="xs:string" minOccurs="0" />
+                <xs:element name="GLName" type="xs:string" minOccurs="0" />
+                <xs:element name="profitCenter" type="xs:string" minOccurs="0" />
+                <xs:element name="debit" type="xs:decimal" minOccurs="0" />
+                <xs:element name="credit" type="xs:decimal" minOccurs="0" />
+                <xs:element name="itemtext" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="dt2" msdata:CaseSensitive="False" msdata:Locale="en-US">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="WBS_SAP" type="xs:string" minOccurs="0" />
+                <xs:element name="ItemName" type="xs:string" minOccurs="0" />
+                <xs:element name="isNonePR" type="xs:string" minOccurs="0" />
+                <xs:element name="CostCenter" type="xs:string" minOccurs="0" />
+                <xs:element name="GLNo" type="xs:string" minOccurs="0" />
+                <xs:element name="GLName" type="xs:string" minOccurs="0" />
+                <xs:element name="ProfitCenter" type="xs:string" minOccurs="0" />
+                <xs:element name="Amount" type="xs:int" minOccurs="0" />
+                <xs:element name="Debit" type="xs:decimal" minOccurs="0" />
+                <xs:element name="Credit" type="xs:decimal" minOccurs="0" />
+                <xs:element name="ItemText" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="dt3" msdata:CaseSensitive="False" msdata:Locale="en-US">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="CompanySAPCode" type="xs:string" minOccurs="0" />
+                <xs:element name="ItemNo" type="xs:string" minOccurs="0" />
+                <xs:element name="ItemName" type="xs:string" minOccurs="0" />
+                <xs:element name="GLNo" type="xs:string" minOccurs="0" />
+                <xs:element name="GLName" type="xs:string" minOccurs="0" />
+                <xs:element name="profitCenter" type="xs:string" minOccurs="0" />
+                <xs:element name="debit" type="xs:decimal" minOccurs="0" />
+                <xs:element name="credit" type="xs:decimal" minOccurs="0" />
+                <xs:element name="itemtext" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <dt1>
+    <ItemNo>000000000010001663</ItemNo>
+    <ItemName>โทรศัพท์ Samsung Galaxy</ItemName>
+    <CostCenter>40009</CostCenter>
+    <ProfitCenterHO>P41000</ProfitCenterHO>
+    <GLNo>0001580010</GLNo>
+    <GLName>สินทรัพย์ส่งเสริมการขาย</GLName>
+    <profitCenter>P41000</profitCenter>
+    <debit>195300.0273</debit>
+    <itemtext>โทรศัพท์ Samsung Galaxy 7</itemtext>
+  </dt1>
+  <dt1>
+    <ItemNo>000000000010001671</ItemNo>
+    <ItemName>Gift Voucher Index</ItemName>
+    <CostCenter>40009</CostCenter>
+    <ProfitCenterHO>P41000</ProfitCenterHO>
+    <GLNo>0001580010</GLNo>
+    <GLName>สินทรัพย์ส่งเสริมการขาย</GLName>
+    <profitCenter>P41000</profitCenter>
+    <debit>50000.0000</debit>
+    <itemtext>Gift Voucher Index 5</itemtext>
+  </dt1>
+  <dt1>
+    <ItemNo />
+    <ItemName />
+    <CostCenter>40009</CostCenter>
+    <ProfitCenterHO>P41000</ProfitCenterHO>
+    <GLNo>0000001000</GLNo>
+    <GLName>บริษัท เอพี (ไทยแลนด์) จำกัด</GLName>
+    <profitCenter>P41000</profitCenter>
+    <credit>-245300.0273</credit>
+    <itemtext />
+  </dt1>
+  <dt2>
+    <WBS_SAP>4/009-CO-P1-E07-P-001</WBS_SAP>
+    <ItemName>โทรศัพท์ Samsung Galaxy</ItemName>
+    <isNonePR>N</isNonePR>
+    <GLNo>0006011020</GLNo>
+    <GLName>ค่าใช้จ่ายส่งเสริมการขายโครงการ(WBS)</GLName>
+    <Debit>111600.0156</Debit>
+    <ItemText> โทรศัพท์ Samsung Galaxy1</ItemText>
+  </dt2>
+  <dt2>
+    <WBS_SAP>4/009-CO-P1-C03-P-001</WBS_SAP>
+    <ItemName>โทรศัพท์ Samsung Galaxy</ItemName>
+    <isNonePR>N</isNonePR>
+    <GLNo>0006011020</GLNo>
+    <GLName>ค่าใช้จ่ายส่งเสริมการขายโครงการ(WBS)</GLName>
+    <Debit>83700.0117</Debit>
+    <ItemText> โทรศัพท์ Samsung Galaxy1</ItemText>
+  </dt2>
+  <dt2>
+    <WBS_SAP>4/009-CO-P1-C03-P-001</WBS_SAP>
+    <ItemName>Gift Voucher Index</ItemName>
+    <isNonePR>N</isNonePR>
+    <GLNo>0006011020</GLNo>
+    <GLName>ค่าใช้จ่ายส่งเสริมการขายโครงการ(WBS)</GLName>
+    <Debit>20000.0000</Debit>
+    <ItemText> Gift Voucher Index1</ItemText>
+  </dt2>
+  <dt2>
+    <WBS_SAP>4/009-CO-P1-E07-P-001</WBS_SAP>
+    <ItemName>Gift Voucher Index</ItemName>
+    <isNonePR>N</isNonePR>
+    <GLNo>0006011020</GLNo>
+    <GLName>ค่าใช้จ่ายส่งเสริมการขายโครงการ(WBS)</GLName>
+    <Debit>30000.0000</Debit>
+    <ItemText> Gift Voucher Index1</ItemText>
+  </dt2>
+  <dt2>
+    <GLNo>0001580010</GLNo>
+    <GLName>สินทรัพย์ส่งเสริมการขาย</GLName>
+    <ProfitCenter>P41000</ProfitCenter>
+    <Credit>-245300.0273</Credit>
+  </dt2>
+  <dt3>
+    <CompanySAPCode>4000</CompanySAPCode>
+    <GLNo>0000004000</GLNo>
+    <GLName>บริษัท เอเชี่ยน พร็อพเพอร์ตี้ จำกัด</GLName>
+    <profitCenter>P11000</profitCenter>
+    <debit>245300.0273</debit>
+  </dt3>
+  <dt3>
+    <CompanySAPCode>4000</CompanySAPCode>
+    <ItemNo>000000000010001663</ItemNo>
+    <ItemName>โทรศัพท์ Samsung Galaxy</ItemName>
+    <GLNo>0001580010</GLNo>
+    <GLName>สินทรัพย์ส่งเสริมการขาย</GLName>
+    <profitCenter>P11000</profitCenter>
+    <credit>-195300.0273</credit>
+    <itemtext>โทรศัพท์ Samsung Galaxy 7</itemtext>
+  </dt3>
+  <dt3>
+    <CompanySAPCode>4000</CompanySAPCode>
+    <ItemNo>000000000010001671</ItemNo>
+    <ItemName>Gift Voucher Index</ItemName>
+    <GLNo>0001580010</GLNo>
+    <GLName>สินทรัพย์ส่งเสริมการขาย</GLName>
+    <profitCenter>P11000</profitCenter>
+    <credit>-50000.0000</credit>
+    <itemtext>Gift Voucher Index 5</itemtext>
+  </dt3>
+</NewDataSet>
